@@ -87,6 +87,10 @@ function DashboardPage() {
 		user?.fullName || user?.firstName || user?.username || "there";
 
 	const completedTodos = todos.filter((todo) => todo.completed).length;
+	const focusScore =
+		todos.length === 0
+			? 0
+			: Math.round((completedTodos / todos.length) * 100);
 
 	const progress = todos.length > 0 ? (completedTodos / todos.length) * 100 : 0;
 	const visibleTodos = filterTodos(todos, filter);
@@ -217,7 +221,9 @@ function DashboardPage() {
 						<div className="flow-card p-5">
 							<p className="text-sm text-flow-text-secondary">Focus score</p>
 
-							<p className="mt-3 text-3xl font-bold text-flow-primary">87%</p>
+						<p className="mt-3 text-3xl font-bold text-flow-primary">
+							{focusScore}%
+						</p>
 						</div>
 
 						<div className="flow-card p-5">
