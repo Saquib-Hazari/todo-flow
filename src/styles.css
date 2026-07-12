@@ -1,0 +1,218 @@
+@import "tailwindcss";
+
+/* Use <html class="dark"> (or a parent .dark) for Tailwind dark: utilities. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * FlowList design tokens
+ *
+ * Tailwind CSS v4: semantic tokens are exposed through @theme inline, while
+ * the values remain switchable at runtime with the .dark class.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* Brand */
+  --flow-primary: #0da678;
+  --flow-primary-hover: #087454;
+  --flow-primary-soft: #d4f5e9;
+  --flow-primary-wash: #ddf8ee;
+  --flow-primary-contrast: #ffffff;
+
+  /* Light surfaces */
+  --flow-canvas: #f7fbf9;
+  --flow-surface: #ffffff;
+  --flow-surface-raised: #ffffff;
+  --flow-surface-soft: #edf7f2;
+  --flow-surface-tint: #d4f5e9;
+
+  /* Light content */
+  --flow-text: #0c1613;
+  --flow-text-secondary: #5d6b66;
+  --flow-text-muted: #71807a;
+  --flow-text-subtle: #82908a;
+  --flow-border: #e1ece7;
+  --flow-border-strong: #cfddd7;
+  --flow-progress-track: #d5e6de;
+
+  /* Status / data visualization */
+  --flow-success: #0da678;
+  --flow-success-bright: #10b981;
+  --flow-highlight: #42d6a5;
+  --flow-danger: #c94f62;
+  --flow-warning: #d8953f;
+
+  /* Typography */
+  --flow-font-sans: "Inter", ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --flow-font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+.dark {
+  color-scheme: dark;
+
+  /* Brand */
+  --flow-primary: #10b981;
+  --flow-primary-hover: #42d6a5;
+  --flow-primary-soft: #123a2e;
+  --flow-primary-wash: #123128;
+  --flow-primary-contrast: #ffffff;
+
+  /* Dark surfaces */
+  --flow-canvas: #07100d;
+  --flow-surface: #0d1b16;
+  --flow-surface-raised: #10211a;
+  --flow-surface-soft: #123128;
+  --flow-surface-tint: #123a2e;
+
+  /* Dark content */
+  --flow-text: #f5fbf8;
+  --flow-text-secondary: #91a49c;
+  --flow-text-muted: #7f938a;
+  --flow-text-subtle: #71867d;
+  --flow-border: #20372e;
+  --flow-border-strong: #234136;
+  --flow-progress-track: #203a30;
+
+  /* Status / data visualization */
+  --flow-success: #10b981;
+  --flow-success-bright: #42d6a5;
+  --flow-highlight: #64e4b9;
+}
+
+@theme inline {
+  --font-sans: var(--flow-font-sans);
+  --font-mono: var(--flow-font-mono);
+
+  --color-flow-canvas: var(--flow-canvas);
+  --color-flow-surface: var(--flow-surface);
+  --color-flow-surface-raised: var(--flow-surface-raised);
+  --color-flow-surface-soft: var(--flow-surface-soft);
+  --color-flow-surface-tint: var(--flow-surface-tint);
+
+  --color-flow-primary: var(--flow-primary);
+  --color-flow-primary-hover: var(--flow-primary-hover);
+  --color-flow-primary-soft: var(--flow-primary-soft);
+  --color-flow-primary-wash: var(--flow-primary-wash);
+  --color-flow-primary-contrast: var(--flow-primary-contrast);
+
+  --color-flow-text: var(--flow-text);
+  --color-flow-text-secondary: var(--flow-text-secondary);
+  --color-flow-text-muted: var(--flow-text-muted);
+  --color-flow-text-subtle: var(--flow-text-subtle);
+  --color-flow-border: var(--flow-border);
+  --color-flow-border-strong: var(--flow-border-strong);
+  --color-flow-progress-track: var(--flow-progress-track);
+
+  --color-flow-success: var(--flow-success);
+  --color-flow-success-bright: var(--flow-success-bright);
+  --color-flow-highlight: var(--flow-highlight);
+  --color-flow-danger: var(--flow-danger);
+  --color-flow-warning: var(--flow-warning);
+
+  --text-display: 4.25rem;
+  --text-display--line-height: 1.02;
+  --text-display--letter-spacing: -0.045em;
+  --text-heading-xl: 2rem;
+  --text-heading-xl--line-height: 1.15;
+  --text-heading-lg: 1.75rem;
+  --text-heading-lg--line-height: 1.2;
+  --text-body-lg: 1.1875rem;
+  --text-body-lg--line-height: 1.55;
+  --text-body: 0.875rem;
+  --text-body--line-height: 1.45;
+  --text-label: 0.75rem;
+  --text-label--line-height: 1.35;
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    transition:
+      background-color 280ms ease,
+      border-color 280ms ease,
+      box-shadow 180ms ease;
+  }
+
+  html {
+    font-family: var(--flow-font-sans);
+    background: var(--flow-canvas);
+    scroll-behavior: smooth;
+  }
+
+  body {
+    min-width: 320px;
+    margin: 0;
+    background: var(--flow-canvas);
+    color: var(--flow-text);
+    font-family: var(--flow-font-sans);
+    font-feature-settings: "cv11", "ss01";
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  ::selection {
+    color: var(--flow-primary-contrast);
+    background: var(--flow-primary);
+  }
+}
+
+@layer components {
+  .flow-card {
+    border: 1px solid var(--flow-border);
+    border-radius: 1rem;
+    background: var(--flow-surface-raised);
+    box-shadow: 0 16px 40px rgb(7 16 13 / 6%);
+  }
+
+  .dark .flow-card {
+    box-shadow: 0 16px 40px rgb(0 0 0 / 24%);
+  }
+
+  .flow-button-primary {
+    border-radius: 0.75rem;
+    background: var(--flow-primary);
+    color: var(--flow-primary-contrast);
+    transition: background-color 150ms ease, transform 150ms ease;
+  }
+
+  .flow-button-primary:hover {
+    background: var(--flow-primary-hover);
+  }
+
+  .flow-button-primary:active {
+    transform: translateY(1px);
+  }
+
+  .flow-focus-ring:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--flow-highlight) 55%, transparent);
+    outline-offset: 3px;
+  }
+
+  .cl-modalBackdrop {
+  background: rgb(7 16 13 / 35%);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+}
+
+/*
+ * Token reference (for designers and implementation reviews)
+ *
+ * Light: #F7FBF9 #FFFFFF #EDF7F2 #DDF8EE #D4F5E9 #E1ECE7 #CFDDD7
+ *        #0C1613 #5D6B66 #71807A #82908A #0DA678
+ * Dark:  #07100D #0D1B16 #10211A #123128 #123A2E #20372E #234136
+ *        #F5FBF8 #91A49C #7F938A #71867D #10B981 #42D6A5 #64E4B9
+ * Font:  Inter Regular / SemiBold / Bold
+ * Scale: Display 68px / Heading XL 32px / Heading LG 28px /
+ *        Body Large 19px / Body 14px / Label 12px
+ */
