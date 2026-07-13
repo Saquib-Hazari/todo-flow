@@ -8,8 +8,8 @@ const SHARE_IMAGE = `${SITE_URL}/homepage.png`;
 
 export const Route = createFileRoute("/")({
 	head: () => ({
+		title: "Flow — A calmer way to get things done",
 		meta: [
-			{ title: "Flow — A calmer way to get things done" },
 			{ name: "description", content: "Turn scattered tasks into a clear, focused plan with Flow." },
 			{ property: "og:site_name", content: "Flow" },
 			{ property: "og:title", content: "Flow — A calmer way to get things done" },

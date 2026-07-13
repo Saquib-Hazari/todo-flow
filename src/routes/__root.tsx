@@ -6,6 +6,7 @@ import appCss from "../styles.css?url";
 
 export const Route = createRootRoute({
 	head: () => ({
+		title: "Todo Flow",
 		meta: [
 			{
 				charSet: "utf-8",
@@ -18,9 +19,6 @@ export const Route = createRootRoute({
 			{ name: "application-name", content: "Flow" },
 			{ name: "theme-color", content: "#0da678" },
 			{ name: "referrer", content: "strict-origin-when-cross-origin" },
-			{
-				title: "Todo Flow",
-			},
 		],
 		links: [
 			{ rel: "icon", href: "/favicon.ico" },

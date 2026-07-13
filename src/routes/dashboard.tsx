@@ -46,8 +46,8 @@ const requireUser = createServerFn().handler(async () => {
 
 export const Route = createFileRoute("/dashboard")({
 	head: () => ({
+		title: "Dashboard — Flow",
 		meta: [
-			{ title: "Dashboard — Flow" },
 			{ name: "robots", content: "noindex, nofollow, noarchive" },
 		],
 	}),

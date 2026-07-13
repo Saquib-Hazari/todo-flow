@@ -2,7 +2,7 @@ import { SignUp } from "@clerk/tanstack-react-start";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/sign-up/$")({
-	head: () => ({ meta: [{ title: "Create your Flow account" }, { name: "robots", content: "noindex, nofollow, noarchive" }] }),
+	head: () => ({ title: "Create your Flow account", meta: [{ name: "robots", content: "noindex, nofollow, noarchive" }] }),
 	component: RouteComponent,
 });
 
