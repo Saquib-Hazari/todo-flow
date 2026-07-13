@@ -3,17 +3,27 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { AuthActions } from "../components/AuthAction.tsx";
 import { Toggle } from "../components/Toggle.tsx";
 
+const SITE_URL = import.meta.env.VITE_APP_URL ?? "http://localhost:3000";
+const SHARE_IMAGE = `${SITE_URL}/homepage.png`;
+
 export const Route = createFileRoute("/")({
 	head: () => ({
 		meta: [
 			{ title: "Flow — A calmer way to get things done" },
 			{ name: "description", content: "Turn scattered tasks into a clear, focused plan with Flow." },
+			{ property: "og:site_name", content: "Flow" },
 			{ property: "og:title", content: "Flow — A calmer way to get things done" },
 			{ property: "og:description", content: "Turn scattered tasks into a clear, focused plan with Flow." },
 			{ property: "og:type", content: "website" },
-			{ name: "twitter:card", content: "summary" },
+			{ property: "og:url", content: SITE_URL },
+			{ property: "og:image", content: SHARE_IMAGE },
+			{ property: "og:image:width", content: "1200" },
+			{ property: "og:image:height", content: "630" },
+			{ property: "og:image:alt", content: "Flow task management app" },
+			{ name: "twitter:card", content: "summary_large_image" },
 			{ name: "twitter:title", content: "Flow — A calmer way to get things done" },
 			{ name: "twitter:description", content: "Turn scattered tasks into a clear, focused plan with Flow." },
+			{ name: "twitter:image", content: SHARE_IMAGE },
 		],
 	}),
 	component: HomePage,
