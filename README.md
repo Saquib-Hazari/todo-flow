@@ -3,9 +3,9 @@
 > A calmer way to organize tasks, protect focus, and make progress every day. ✨
 
 <p align="center">
-  <a href="YOUR_LIVE_DEMO_URL">Live Demo</a> ·
+  <a href="https://todo-flows.netlify.app/">Live Demo</a> ·
   <a href="https://www.linkedin.com/in/hazari-saquib/">LinkedIn</a> ·
-  <a href="YOUR_TWITTER_URL">Twitter / X</a>
+  <a href="https://x.com/saquib7298">Twitter / X</a>
 </p>
 
 <p align="center">
@@ -166,9 +166,9 @@ Before deploying:
 Built with care by **Saquib Hazari**.
 
 <p>
-  <a href="[YOUR_LINKEDIN_URL](https://www.linkedin.com/in/hazari-saquib/)">LinkedIn</a> ·
-  <a href="[YOUR_TWITTER_URL](https://x.com/saquib7298)">Twitter / X</a> ·
-  <a href="[YOUR_PORTFOLIO_URL](https://react-frontend-zlql.vercel.app/)">Portfolio</a>
+  <a href="https://www.linkedin.com/in/hazari-saquib/">LinkedIn</a> ·
+  <a href="YOUR_TWITTER_URL](https://x.com/saquib7298">Twitter / X</a> ·
+  <a href="YOUR_PORTFOLIO_URL](https://react-frontend-zlql.vercel.app/">Portfolio</a>
 </p>
 
 ## License
