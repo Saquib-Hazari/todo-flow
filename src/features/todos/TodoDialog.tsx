@@ -6,13 +6,14 @@ import type { Todo, TodoTags } from "./types.ts";
 
 type Props = {
 	onCreate: (todo: Todo) => Promise<void> | void;
+	defaultTag?: TodoTags;
 };
 
-export function TodoDialog({ onCreate }: Props) {
+export function TodoDialog({ onCreate, defaultTag = "today" }: Props) {
 	const [open, setOpen] = useState(false);
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
-	const [tag, setTag] = useState<TodoTags>("today");
+	const [tag, setTag] = useState<TodoTags>(defaultTag);
 	const [error, setError] = useState<string | null>(null);
 	const [saving, setSaving] = useState(false);
 
@@ -37,12 +38,13 @@ export function TodoDialog({ onCreate }: Props) {
 
 			setTitle("");
 			setDescription("");
-			setTag("today");
+			setTag(defaultTag);
 			setOpen(false);
 		} catch (cause) {
 			const message = cause instanceof Error ? cause.message : "";
 			setError(
-				message.includes("PERMISSION_DENIED") || message.includes("firestore.googleapis.com")
+				message.includes("PERMISSION_DENIED") ||
+					message.includes("firestore.googleapis.com")
 					? "Todos cannot be saved yet because Firestore is not enabled for this project."
 					: "Could not save this todo. Please try again.",
 			);
@@ -52,7 +54,13 @@ export function TodoDialog({ onCreate }: Props) {
 	}
 
 	return (
-		<Dialog.Root open={open} onOpenChange={setOpen}>
+		<Dialog.Root
+			open={open}
+			onOpenChange={(nextOpen) => {
+				setOpen(nextOpen);
+				if (nextOpen) setTag(defaultTag);
+			}}
+		>
 			<Dialog.Trigger asChild>
 				<button
 					type="button"

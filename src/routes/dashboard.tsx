@@ -29,8 +29,8 @@ import {
 	deleteTodo,
 	listTodos,
 } from "../features/todos/todo.ts";
-import type { Todo } from "../features/todos/types.ts";
 import { filterTodos, getGreeting } from "../features/todos/todo.utils.ts";
+import type { Todo } from "../features/todos/types.ts";
 
 const requireUser = createServerFn().handler(async () => {
 	const { isAuthenticated, userId } = await auth();
@@ -45,7 +45,12 @@ const requireUser = createServerFn().handler(async () => {
 });
 
 export const Route = createFileRoute("/dashboard")({
-	head: () => ({ meta: [{ title: "Dashboard — Flow" }, { name: "robots", content: "noindex, nofollow, noarchive" }] }),
+	head: () => ({
+		meta: [
+			{ title: "Dashboard — Flow" },
+			{ name: "robots", content: "noindex, nofollow, noarchive" },
+		],
+	}),
 	beforeLoad: async () => {
 		return requireUser();
 	},
@@ -56,7 +61,8 @@ function DashboardPage() {
 	const { user, isLoaded } = useUser();
 
 	const [todos, setTodos] = useState<Todo[]>([]);
-	const [filter, setFilter] = useState<import("../features/todos/todo.utils.ts").TodoFilter>("all");
+	const [filter, setFilter] =
+		useState<import("../features/todos/todo.utils.ts").TodoFilter>("all");
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 	const [mobileHeaderVisible, setMobileHeaderVisible] = useState(true);
 	const lastScrollY = useRef(0);
@@ -88,9 +94,7 @@ function DashboardPage() {
 
 	const completedTodos = todos.filter((todo) => todo.completed).length;
 	const focusScore =
-		todos.length === 0
-			? 0
-			: Math.round((completedTodos / todos.length) * 100);
+		todos.length === 0 ? 0 : Math.round((completedTodos / todos.length) * 100);
 
 	const progress = todos.length > 0 ? (completedTodos / todos.length) * 100 : 0;
 	const visibleTodos = filterTodos(todos, filter);
@@ -169,9 +173,9 @@ function DashboardPage() {
 				>
 					<button
 						type="button"
-							aria-label="Open sidebar"
-							aria-expanded={sidebarOpen}
-							aria-controls="dashboard-sidebar"
+						aria-label="Open sidebar"
+						aria-expanded={sidebarOpen}
+						aria-controls="dashboard-sidebar"
 						onClick={() => setSidebarOpen(true)}
 						className="rounded-lg border border-flow-border px-3 py-2 text-xl"
 					>
@@ -186,7 +190,9 @@ function DashboardPage() {
 					</p>
 
 					<h1 className="mt-3 text-3xl font-bold tracking-tight">
-						{isLoaded ? `${getGreeting(new Date().getHours())}, ${userName}.` : "Welcome"}
+						{isLoaded
+							? `${getGreeting(new Date().getHours())}, ${userName}.`
+							: "Welcome"}
 					</h1>
 
 					<p className="mt-2 text-flow-text-secondary">
@@ -221,9 +227,9 @@ function DashboardPage() {
 						<div className="flow-card p-5">
 							<p className="text-sm text-flow-text-secondary">Focus score</p>
 
-						<p className="mt-3 text-3xl font-bold text-flow-primary">
-							{focusScore}%
-						</p>
+							<p className="mt-3 text-3xl font-bold text-flow-primary">
+								{focusScore}%
+							</p>
 						</div>
 
 						<div className="flow-card p-5">
@@ -245,7 +251,16 @@ function DashboardPage() {
 								</p>
 							</div>
 
-							<TodoDialog onCreate={handleCreateTodo} />
+							<TodoDialog
+								defaultTag={
+									filter === "personal" ||
+									filter === "work" ||
+									filter === "workout"
+										? filter
+										: "today"
+								}
+								onCreate={handleCreateTodo}
+							/>
 						</div>
 
 						<div className="mt-5 space-y-3">

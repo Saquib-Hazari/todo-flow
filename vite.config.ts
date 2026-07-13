@@ -12,7 +12,11 @@ const config = defineConfig({
 	plugins: [
 		devtools(),
 		tailwindcss(),
-		tanstackStart(),
+		tanstackStart({
+			serverFns: {
+				disableCsrfMiddlewareWarning: true,
+			},
+		}),
 		netlify(),
 		viteReact(),
 		babel({ presets: [reactCompilerPreset()] }),
