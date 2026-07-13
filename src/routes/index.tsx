@@ -3,7 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { AuthActions } from "../components/AuthAction.tsx";
 import { Toggle } from "../components/Toggle.tsx";
 
-const SITE_URL = import.meta.env.VITE_APP_URL ?? "http://localhost:3000";
+const SITE_URL = import.meta.env.VITE_APP_URL ?? "https://todo-flows.netlify.app";
 const SHARE_IMAGE = `${SITE_URL}/homepage.png`;
 
 export const Route = createFileRoute("/")({
