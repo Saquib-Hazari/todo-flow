@@ -167,8 +167,8 @@ Built with care by **Saquib Hazari**.
 
 <p>
   <a href="https://www.linkedin.com/in/hazari-saquib/">LinkedIn</a> ·
-  <a href="YOUR_TWITTER_URL](https://x.com/saquib7298">Twitter / X</a> ·
-  <a href="YOUR_PORTFOLIO_URL](https://react-frontend-zlql.vercel.app/">Portfolio</a>
+  <a href="https://x.com/saquib7298">Twitter / X</a> ·
+  <a href="https://react-frontend-zlql.vercel.app/">Portfolio</a>
 </p>
 
 ## License
