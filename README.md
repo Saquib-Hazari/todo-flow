@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="YOUR_LIVE_DEMO_URL">Live Demo</a> ·
-  <a href="YOUR_LINKEDIN_URL">LinkedIn</a> ·
+  <a href="(https://www.linkedin.com/in/hazari-saquib/)">LinkedIn</a> ·
   <a href="YOUR_TWITTER_URL">Twitter / X</a>
 </p>
 
