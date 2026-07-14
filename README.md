@@ -96,6 +96,7 @@ Create `.env.local`:
 
 ```env
 VITE_CLERK_PUBLISHABLE_KEY=pk_test_...
+CLERK_PUBLISHABLE_KEY=pk_test_...
 CLERK_SECRET_KEY=sk_test_...
 VITE_APP_URL=https://your-project.vercel.app
 ```
@@ -132,7 +133,7 @@ Flow deploys to Vercel with the Nitro Vite plugin. Todo data remains in each vis
 
 Before deploying:
 
-- Add `VITE_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` to Vercel.
+- Add `VITE_CLERK_PUBLISHABLE_KEY`, `CLERK_PUBLISHABLE_KEY` (the same `pk_...` value), and `CLERK_SECRET_KEY` to Vercel.
 - Use production Clerk keys and configure the production Clerk domain.
 - Set `VITE_APP_URL` to your production Vercel URL. This is required for correct canonical, Open Graph, Twitter, and share-image links.
 - Import the Git repository into Vercel; it will detect TanStack Start/Nitro automatically.
