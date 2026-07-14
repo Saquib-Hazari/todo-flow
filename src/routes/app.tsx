@@ -15,6 +15,10 @@ const requireAuth = createServerFn().handler(async () => {
 });
 
 export const Route = createFileRoute("/app")({
+	head: () => ({
+		title: "App — Flow",
+		meta: [{ name: "robots", content: "noindex, nofollow, noarchive" }],
+	}),
 	beforeLoad: async () => {
 		return requireAuth();
 	},

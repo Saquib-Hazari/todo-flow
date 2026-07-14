@@ -1,17 +1,13 @@
 import { UserButton, useClerk, useUser } from "@clerk/tanstack-react-start";
 import { Link } from "@tanstack/react-router";
-
-export type TodoFilter =
-	| "all"
-	| "today"
-	| "completed"
-	| "personal"
-	| "work"
-	| "workout";
+import type { TodoFilter } from "../features/todos/todo.utils.ts";
 
 type SidebarProps = {
 	filter: TodoFilter;
 	onFilterChange: (filter: TodoFilter) => void;
+	activeView: "todos" | "calendar" | "analytics";
+	onCalendarOpen: () => void;
+	onAnalyticsOpen: () => void;
 	open: boolean;
 	onClose: () => void;
 };
@@ -19,6 +15,9 @@ type SidebarProps = {
 export function Sidebar({
 	filter,
 	onFilterChange,
+	activeView,
+	onCalendarOpen,
+	onAnalyticsOpen,
 	open,
 	onClose,
 }: SidebarProps) {
@@ -26,6 +25,8 @@ export function Sidebar({
 	const { openUserProfile, signOut } = useClerk();
 	const userName =
 		user?.fullName || user?.firstName || user?.username || "User";
+	const isTodoFilterActive = (value: TodoFilter) =>
+		activeView === "todos" && filter === value;
 	const item = (value: TodoFilter, label: string, icon: string) => (
 		<button
 			type="button"
@@ -34,14 +35,52 @@ export function Sidebar({
 				onClose();
 			}}
 			className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition ${
-				filter === value
+				isTodoFilterActive(value)
 					? "bg-flow-primary text-white"
 					: "text-flow-text-secondary hover:bg-flow-primary-soft hover:text-flow-text"
 			}`}
-			aria-pressed={filter === value}
+			aria-pressed={isTodoFilterActive(value)}
 		>
 			<span>{icon}</span>
 			{label}
+		</button>
+	);
+
+	const calendarItem = (
+		<button
+			type="button"
+			onClick={() => {
+				onCalendarOpen();
+				onClose();
+			}}
+			className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition ${
+				activeView === "calendar"
+					? "bg-flow-primary text-white"
+					: "text-flow-text-secondary hover:bg-flow-primary-soft hover:text-flow-text"
+			}`}
+			aria-pressed={activeView === "calendar"}
+		>
+			<span>◫</span>
+			Calendar
+		</button>
+	);
+
+	const analyticsItem = (
+		<button
+			type="button"
+			onClick={() => {
+				onAnalyticsOpen();
+				onClose();
+			}}
+			className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition ${
+				activeView === "analytics"
+					? "bg-flow-primary text-white"
+					: "text-flow-text-secondary hover:bg-flow-primary-soft hover:text-flow-text"
+			}`}
+			aria-pressed={activeView === "analytics"}
+		>
+			<span>◔</span>
+			Dashboard
 		</button>
 	);
 
@@ -75,9 +114,11 @@ export function Sidebar({
 					<p className="px-3 pb-2 text-[10px] font-bold uppercase tracking-widest text-flow-text-muted">
 						Workspace
 					</p>
+					{analyticsItem}
 					{item("all", "My todos", "✓")}
 					{item("today", "Today", "◷")}
 					{item("completed", "Completed", "✓")}
+					{calendarItem}
 				</nav>
 
 				<nav aria-label="Collection filters" className="mt-8 space-y-1">

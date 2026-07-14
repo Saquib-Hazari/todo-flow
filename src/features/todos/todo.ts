@@ -6,6 +6,7 @@ export const createTodo = createServerFn()
 			title: string;
 			description?: string;
 			tag: "work" | "today" | "personal" | "workout";
+			dueDate: string;
 		}) => input,
 	)
 	.handler(async ({ data }) => {
@@ -14,8 +15,8 @@ export const createTodo = createServerFn()
 	});
 
 export const listTodos = createServerFn().handler(async () => {
-		const { listTodoRecords } = await import("./todo.server");
-		return listTodoRecords();
+	const { listTodoRecords } = await import("./todo.server");
+	return listTodoRecords();
 });
 
 export const deleteTodo = createServerFn()
@@ -25,7 +26,14 @@ export const deleteTodo = createServerFn()
 		return deleteTodoRecord(data);
 	});
 
-export const clearTodos = createServerFn().handler(async () => {
-		const { clearTodoRecords } = await import("./todo.server");
-		return clearTodoRecords();
+export const updateTodoCompletion = createServerFn()
+	.validator((input: { id: string; completed: boolean }) => input)
+	.handler(async ({ data }) => {
+		const { updateTodoCompletionRecord } = await import("./todo.server");
+		return updateTodoCompletionRecord(data);
 	});
+
+export const clearTodos = createServerFn().handler(async () => {
+	const { clearTodoRecords } = await import("./todo.server");
+	return clearTodoRecords();
+});

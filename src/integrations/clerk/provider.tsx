@@ -38,11 +38,11 @@ export default function AppClerkProvider({
 						"rounded-xl border-flow-border bg-flow-surface-raised focus:border-flow-primary focus:ring-flow-primary",
 					formButtonPrimary:
 						"rounded-xl bg-flow-primary font-semibold hover:bg-flow-primary/90",
-          socialButtonsBlockButton:
-            "!opacity-100 rounded-xl border !border-flow-border-strong !bg-flow-surface-raised !text-flow-text hover:bg-flow-surface-soft",
-          socialButtonsBlockButtonText:
-            "!opacity-100 !text-[#f5fbf8] font-semibold",
-          socialButtonsProviderIcon: "!opacity-100",
+					socialButtonsBlockButton:
+						"!opacity-100 rounded-xl border !border-flow-border-strong !bg-flow-surface-raised !text-flow-text hover:bg-flow-surface-soft",
+					socialButtonsBlockButtonText:
+						"!opacity-100 !text-[#f5fbf8] font-semibold",
+					socialButtonsProviderIcon: "!opacity-100",
 					footer: "hidden",
 				},
 			}}

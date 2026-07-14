@@ -18,19 +18,34 @@ import { CSS } from "@dnd-kit/utilities";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { Menu, Trash2 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import Calendar from "../components/Calendar.tsx";
 import { Sidebar } from "../components/SideBar.tsx";
-import { Toggle } from "../components/Toggle.tsx";
+import { ThemeMenu } from "../components/ThemeMenu.tsx";
+import { TodoDateFilter } from "../features/todos/TodoDateFilter.tsx";
 import { TodoDialog } from "../features/todos/TodoDialog.tsx";
 import {
 	clearTodos,
 	createTodo as createTodoServer,
 	deleteTodo,
 	listTodos,
+	updateTodoCompletion,
 } from "../features/todos/todo.ts";
-import { filterTodos, getGreeting } from "../features/todos/todo.utils.ts";
+import {
+	type DueDateFilter,
+	filterTodos,
+	filterTodosByDueDate,
+	getGreeting,
+	getLocalDateKey,
+	type TodoFilter,
+} from "../features/todos/todo.utils.ts";
 import type { Todo } from "../features/todos/types.ts";
+
+const TaskAnalytics = lazy(() =>
+	import("../features/todos/TaskAnalytics.tsx").then((module) => ({
+		default: module.TaskAnalytics,
+	})),
+);
 
 const requireUser = createServerFn().handler(async () => {
 	const { isAuthenticated, userId } = await auth();
@@ -47,9 +62,7 @@ const requireUser = createServerFn().handler(async () => {
 export const Route = createFileRoute("/dashboard")({
 	head: () => ({
 		title: "Dashboard — Flow",
-		meta: [
-			{ name: "robots", content: "noindex, nofollow, noarchive" },
-		],
+		meta: [{ name: "robots", content: "noindex, nofollow, noarchive" }],
 	}),
 	beforeLoad: async () => {
 		return requireUser();
@@ -61,9 +74,16 @@ function DashboardPage() {
 	const { user, isLoaded } = useUser();
 
 	const [todos, setTodos] = useState<Todo[]>([]);
-	const [filter, setFilter] =
-		useState<import("../features/todos/todo.utils.ts").TodoFilter>("all");
+	const [filter, setFilter] = useState<TodoFilter>("all");
+	const [dueDateFilter, setDueDateFilter] = useState<DueDateFilter>("all");
 	const [sidebarOpen, setSidebarOpen] = useState(false);
+	const [activeView, setActiveView] = useState<
+		"todos" | "calendar" | "analytics"
+	>("analytics");
+	const [todoDialogOpen, setTodoDialogOpen] = useState(false);
+	const [selectedDueDate, setSelectedDueDate] = useState(() =>
+		getLocalDateKey(),
+	);
 	const [mobileHeaderVisible, setMobileHeaderVisible] = useState(true);
 	const lastScrollY = useRef(0);
 	const sensors = useSensors(
@@ -97,7 +117,10 @@ function DashboardPage() {
 		todos.length === 0 ? 0 : Math.round((completedTodos / todos.length) * 100);
 
 	const progress = todos.length > 0 ? (completedTodos / todos.length) * 100 : 0;
-	const visibleTodos = filterTodos(todos, filter);
+	const visibleTodos = filterTodosByDueDate(
+		filterTodos(todos, filter),
+		dueDateFilter,
+	);
 
 	const handleCreateTodo = async (todo: Todo) => {
 		const savedTodo = await createTodoServer({
@@ -105,6 +128,7 @@ function DashboardPage() {
 				title: todo.title,
 				description: todo.description,
 				tag: todo.tag,
+				dueDate: todo.dueDate,
 			},
 		});
 
@@ -114,17 +138,27 @@ function DashboardPage() {
 		]);
 	};
 
-	function toggleTodo(todoId: string) {
+	async function toggleTodo(todoId: string) {
+		const todo = todos.find((item) => item.id === todoId);
+		if (!todo) return;
+
+		const completed = !todo.completed;
 		setTodos((currentTodos) =>
-			currentTodos.map((todo) =>
-				todo.id === todoId
-					? {
-							...todo,
-							completed: !todo.completed,
-						}
-					: todo,
+			currentTodos.map((item) =>
+				item.id === todoId ? { ...item, completed } : item,
 			),
 		);
+
+		try {
+			await updateTodoCompletion({ data: { id: todoId, completed } });
+		} catch (error) {
+			console.error("Could not update todo completion", error);
+			setTodos((currentTodos) =>
+				currentTodos.map((item) =>
+					item.id === todoId ? { ...item, completed: todo.completed } : item,
+				),
+			);
+		}
 	}
 
 	function handleDragEnd({ active, over }: DragEndEvent) {
@@ -161,7 +195,13 @@ function DashboardPage() {
 		<main className="flex min-h-screen bg-flow-canvas text-flow-text">
 			<Sidebar
 				filter={filter}
-				onFilterChange={setFilter}
+				onFilterChange={(nextFilter) => {
+					setFilter(nextFilter);
+					setActiveView("todos");
+				}}
+				activeView={activeView}
+				onCalendarOpen={() => setActiveView("calendar")}
+				onAnalyticsOpen={() => setActiveView("analytics")}
 				open={sidebarOpen}
 				onClose={() => setSidebarOpen(false)}
 			/>
@@ -181,131 +221,184 @@ function DashboardPage() {
 					>
 						<Menu />
 					</button>
-					<Toggle />
+					<ThemeMenu />
 				</div>
 
 				<section className="mx-auto max-w-7xl px-6 py-10">
-					<p className="inline-flex rounded-full bg-flow-primary-soft px-3 py-1 text-sm font-semibold uppercase tracking-wide text-flow-primary">
-						My todos
-					</p>
-
-					<h1 className="mt-3 text-3xl font-bold tracking-tight">
-						{isLoaded
-							? `${getGreeting(new Date().getHours())}, ${userName}.`
-							: "Welcome"}
-					</h1>
-
-					<p className="mt-2 text-flow-text-secondary">
-						Here’s a clear view of what needs your attention today.
-					</p>
-
-					<div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+					{activeView === "analytics" ? (
+						<Suspense
+							fallback={
+								<div className="flow-card p-8 text-sm text-flow-text-secondary">
+									Loading analytics…
+								</div>
+							}
+						>
+							<TaskAnalytics todos={todos} />
+						</Suspense>
+					) : activeView === "calendar" ? (
 						<div className="flow-card p-5">
-							<p className="text-sm text-flow-text-secondary">
-								Today’s progress
-							</p>
+							<div className="flex flex-wrap items-center justify-between gap-4">
+								<div>
+									<p className="inline-flex rounded-full bg-flow-primary-soft px-3 py-1 text-sm font-semibold uppercase tracking-wide text-flow-primary">
+										Calendar
+									</p>
+									<h1 className="mt-3 text-3xl font-bold tracking-tight">
+										Plan your tasks
+									</h1>
+									<p className="mt-2 text-flow-text-secondary">
+										Select a date to add a task, or browse your scheduled work.
+									</p>
+								</div>
+								<TodoDialog
+									onCreate={handleCreateTodo}
+									defaultDueDate={selectedDueDate}
+									open={todoDialogOpen}
+									onOpenChange={setTodoDialogOpen}
+								/>
+							</div>
 
-							<p className="mt-3 text-3xl font-bold">
-								{completedTodos} / {todos.length}
-							</p>
-
-							<div
-								className="mt-4 h-2 overflow-hidden rounded-full bg-flow-progress-track"
-								role="progressbar"
-								aria-label="Today’s todo progress"
-								aria-valuemin={0}
-								aria-valuemax={100}
-								aria-valuenow={progress}
-							>
-								<div
-									className="h-full rounded-full bg-flow-primary transition-all"
-									style={{ width: `${progress}%` }}
+							<div className="mt-6">
+								<Calendar
+									tasks={todos}
+									onDateClick={(date) => {
+										setSelectedDueDate(date);
+										setTodoDialogOpen(true);
+									}}
 								/>
 							</div>
 						</div>
-
-						<div className="flow-card p-5">
-							<p className="text-sm text-flow-text-secondary">Focus score</p>
-
-							<p className="mt-3 text-3xl font-bold text-flow-primary">
-								{focusScore}%
+					) : (
+						<>
+							<p className="inline-flex rounded-full bg-flow-primary-soft px-3 py-1 text-sm font-semibold uppercase tracking-wide text-flow-primary">
+								My todos
 							</p>
-						</div>
 
-						<div className="flow-card p-5">
-							<p className="text-sm text-flow-text-secondary">Open tasks</p>
+							<h1 className="mt-3 text-3xl font-bold tracking-tight">
+								{isLoaded
+									? `${getGreeting(new Date().getHours())}, ${userName}.`
+									: "Welcome"}
+							</h1>
 
-							<p className="mt-3 text-3xl font-bold">
-								{todos.length - completedTodos}
+							<p className="mt-2 text-flow-text-secondary">
+								Here’s a clear view of what needs your attention today.
 							</p>
-						</div>
-					</div>
 
-					<div className="mt-8 flow-card p-5">
-						<div className="flex items-center justify-between gap-4">
-							<div>
-								<h2 className="text-lg font-bold">Your focus list</h2>
+							<div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+								<div className="flow-card p-5">
+									<p className="text-sm text-flow-text-secondary">
+										Today’s progress
+									</p>
 
-								<p className="mt-1 text-sm text-flow-text-secondary">
-									Keep your next steps clear and manageable.
-								</p>
-							</div>
+									<p className="mt-3 text-3xl font-bold">
+										{completedTodos} / {todos.length}
+									</p>
 
-							<TodoDialog
-								defaultTag={
-									filter === "personal" ||
-									filter === "work" ||
-									filter === "workout"
-										? filter
-										: "today"
-								}
-								onCreate={handleCreateTodo}
-							/>
-						</div>
+									<div
+										className="mt-4 h-2 overflow-hidden rounded-full bg-flow-progress-track"
+										role="progressbar"
+										aria-label="Today’s todo progress"
+										aria-valuemin={0}
+										aria-valuemax={100}
+										aria-valuenow={progress}
+									>
+										<div
+											className="h-full rounded-full bg-flow-primary transition-all"
+											style={{ width: `${progress}%` }}
+										/>
+									</div>
+								</div>
 
-						<div className="mt-5 space-y-3">
-							{visibleTodos.length === 0 ? (
-								<div className="rounded-xl border border-dashed border-flow-border-strong p-8 text-center">
-									<p className="font-semibold">No todos yet</p>
+								<div className="flow-card p-5">
+									<p className="text-sm text-flow-text-secondary">
+										Focus score
+									</p>
 
-									<p className="mt-1 text-sm text-flow-text-secondary">
-										Add your first task to start your flow.
+									<p className="mt-3 text-3xl font-bold text-flow-primary">
+										{focusScore}%
 									</p>
 								</div>
-							) : (
-								<DndContext
-									sensors={sensors}
-									collisionDetection={closestCenter}
-									onDragEnd={handleDragEnd}
-								>
-									<SortableContext
-										items={visibleTodos.map((todo) => todo.id)}
-										strategy={verticalListSortingStrategy}
-									>
-										{visibleTodos.map((todo) => (
-											<SortableTask
-												key={todo.id}
-												todo={todo}
-												onToggle={() => toggleTodo(todo.id)}
-												onDelete={() => handleDeleteTodo(todo.id)}
-											/>
-										))}
-									</SortableContext>
-								</DndContext>
-							)}
-						</div>
-						{todos.length > 0 && (
-							<div className="mt-6 flex justify-end border-t border-flow-border pt-4">
-								<button
-									type="button"
-									onClick={handleClearTodos}
-									className="inline-flex items-center gap-2 rounded-xl border border-2 cursor-pointer border-red-500 px-4 py-2.5 text-sm font-semibold text-red-500 transition hover:bg-red-50"
-								>
-									<Trash2 size={16} /> Clear all
-								</button>
+
+								<div className="flow-card p-5">
+									<p className="text-sm text-flow-text-secondary">Open tasks</p>
+
+									<p className="mt-3 text-3xl font-bold">
+										{todos.length - completedTodos}
+									</p>
+								</div>
 							</div>
-						)}
-					</div>
+
+							<div className="mt-8 flow-card p-5">
+								<div className="flex items-center justify-between gap-4">
+									<div>
+										<h2 className="text-lg font-bold">Your focus list</h2>
+
+										<p className="mt-1 text-sm text-flow-text-secondary">
+											Keep your next steps clear and manageable.
+										</p>
+									</div>
+
+									<TodoDialog
+										defaultTag={
+											filter === "personal" ||
+											filter === "work" ||
+											filter === "workout"
+												? filter
+												: "today"
+										}
+										onCreate={handleCreateTodo}
+									/>
+								</div>
+
+								<TodoDateFilter
+									value={dueDateFilter}
+									onChange={setDueDateFilter}
+								/>
+
+								<div className="mt-5 space-y-3">
+									{visibleTodos.length === 0 ? (
+										<div className="rounded-xl border border-dashed border-flow-border-strong p-8 text-center">
+											<p className="font-semibold">No todos yet</p>
+
+											<p className="mt-1 text-sm text-flow-text-secondary">
+												Add your first task to start your flow.
+											</p>
+										</div>
+									) : (
+										<DndContext
+											sensors={sensors}
+											collisionDetection={closestCenter}
+											onDragEnd={handleDragEnd}
+										>
+											<SortableContext
+												items={visibleTodos.map((todo) => todo.id)}
+												strategy={verticalListSortingStrategy}
+											>
+												{visibleTodos.map((todo) => (
+													<SortableTask
+														key={todo.id}
+														todo={todo}
+														onToggle={() => toggleTodo(todo.id)}
+														onDelete={() => handleDeleteTodo(todo.id)}
+													/>
+												))}
+											</SortableContext>
+										</DndContext>
+									)}
+								</div>
+								{todos.length > 0 && (
+									<div className="mt-6 flex justify-end border-t border-flow-border pt-4">
+										<button
+											type="button"
+											onClick={handleClearTodos}
+											className="inline-flex items-center gap-2 rounded-xl border border-2 cursor-pointer border-red-500 px-4 py-2.5 text-sm font-semibold text-red-500 transition hover:bg-red-50"
+										>
+											<Trash2 size={16} /> Clear all
+										</button>
+									</div>
+								)}
+							</div>
+						</>
+					)}
 				</section>
 			</div>
 		</main>

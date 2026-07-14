@@ -81,6 +81,162 @@
   --flow-highlight: #64e4b9;
 }
 
+html[data-flow-theme="azure"] {
+  color-scheme: light;
+  --flow-primary: #2775ea;
+  --flow-primary-hover: #1558bf;
+  --flow-primary-soft: #dceaff;
+  --flow-primary-wash: #edf4ff;
+  --flow-primary-contrast: #ffffff;
+  --flow-canvas: #f7faff;
+  --flow-surface: #ffffff;
+  --flow-surface-raised: #ffffff;
+  --flow-surface-soft: #eef5ff;
+  --flow-surface-tint: #dceaff;
+  --flow-text: #101927;
+  --flow-text-secondary: #56657a;
+  --flow-text-muted: #718096;
+  --flow-text-subtle: #8491a3;
+  --flow-border: #dce6f4;
+  --flow-border-strong: #c8d6e9;
+  --flow-progress-track: #d8e4f4;
+  --flow-success: #2775ea;
+  --flow-success-bright: #4b91f2;
+  --flow-highlight: #67a7ff;
+  --flow-danger: #cf5366;
+  --flow-warning: #ca8a32;
+}
+
+html[data-flow-theme="cyan-night"] {
+  color-scheme: dark;
+  --flow-primary: #14c9d7;
+  --flow-primary-hover: #67e7ef;
+  --flow-primary-soft: #123d43;
+  --flow-primary-wash: #102f35;
+  --flow-primary-contrast: #071416;
+  --flow-canvas: #061113;
+  --flow-surface: #0b1c1f;
+  --flow-surface-raised: #0f2529;
+  --flow-surface-soft: #102f35;
+  --flow-surface-tint: #123d43;
+  --flow-text: #edffff;
+  --flow-text-secondary: #9bc5c8;
+  --flow-text-muted: #78a0a4;
+  --flow-text-subtle: #64898d;
+  --flow-border: #1c3d42;
+  --flow-border-strong: #275159;
+  --flow-progress-track: #1a4247;
+  --flow-success: #14c9d7;
+  --flow-success-bright: #67e7ef;
+  --flow-highlight: #78eff7;
+  --flow-danger: #ff7086;
+  --flow-warning: #f6bd54;
+}
+
+html[data-flow-theme="ruby-night"] {
+  color-scheme: dark;
+  --flow-primary: #ee5b70;
+  --flow-primary-hover: #ff9aa8;
+  --flow-primary-soft: #44202a;
+  --flow-primary-wash: #321820;
+  --flow-primary-contrast: #ffffff;
+  --flow-canvas: #130b0e;
+  --flow-surface: #211116;
+  --flow-surface-raised: #2b161d;
+  --flow-surface-soft: #321820;
+  --flow-surface-tint: #44202a;
+  --flow-text: #fff5f6;
+  --flow-text-secondary: #d1a8ae;
+  --flow-text-muted: #aa7c84;
+  --flow-text-subtle: #8c656c;
+  --flow-border: #4a252e;
+  --flow-border-strong: #66303c;
+  --flow-progress-track: #4a2830;
+  --flow-success: #ee5b70;
+  --flow-success-bright: #ff9aa8;
+  --flow-highlight: #ffb1bb;
+  --flow-danger: #ff7588;
+  --flow-warning: #f1b659;
+}
+
+html[data-flow-theme="gold-night"] {
+  color-scheme: dark;
+  --flow-primary: #e7ad3e;
+  --flow-primary-hover: #ffd477;
+  --flow-primary-soft: #40341a;
+  --flow-primary-wash: #302712;
+  --flow-primary-contrast: #171006;
+  --flow-canvas: #121009;
+  --flow-surface: #201c10;
+  --flow-surface-raised: #292313;
+  --flow-surface-soft: #302712;
+  --flow-surface-tint: #40341a;
+  --flow-text: #fff9e9;
+  --flow-text-secondary: #d1be8e;
+  --flow-text-muted: #ad9a6e;
+  --flow-text-subtle: #8f805a;
+  --flow-border: #4c3f20;
+  --flow-border-strong: #67542a;
+  --flow-progress-track: #4a3c1f;
+  --flow-success: #e7ad3e;
+  --flow-success-bright: #ffd477;
+  --flow-highlight: #ffe19a;
+  --flow-danger: #f16a62;
+  --flow-warning: #e7ad3e;
+}
+
+html[data-flow-theme="rose-night"] {
+  color-scheme: dark;
+  --flow-primary: #ec749f;
+  --flow-primary-hover: #ffacc7;
+  --flow-primary-soft: #432233;
+  --flow-primary-wash: #311925;
+  --flow-primary-contrast: #ffffff;
+  --flow-canvas: #120a10;
+  --flow-surface: #21111a;
+  --flow-surface-raised: #2a1621;
+  --flow-surface-soft: #311925;
+  --flow-surface-tint: #432233;
+  --flow-text: #fff5f8;
+  --flow-text-secondary: #d2aabb;
+  --flow-text-muted: #aa7f92;
+  --flow-text-subtle: #8b6677;
+  --flow-border: #4b2838;
+  --flow-border-strong: #653449;
+  --flow-progress-track: #4a2938;
+  --flow-success: #ec749f;
+  --flow-success-bright: #ffacc7;
+  --flow-highlight: #ffc0d5;
+  --flow-danger: #ff718f;
+  --flow-warning: #efb15e;
+}
+
+html[data-flow-theme="violet-night"] {
+  color-scheme: dark;
+  --flow-primary: #9b7cf3;
+  --flow-primary-hover: #c0acff;
+  --flow-primary-soft: #2f2850;
+  --flow-primary-wash: #211c3b;
+  --flow-primary-contrast: #ffffff;
+  --flow-canvas: #0d0b17;
+  --flow-surface: #18142a;
+  --flow-surface-raised: #211c36;
+  --flow-surface-soft: #211c3b;
+  --flow-surface-tint: #2f2850;
+  --flow-text: #f8f5ff;
+  --flow-text-secondary: #b7aad7;
+  --flow-text-muted: #9182b8;
+  --flow-text-subtle: #76699b;
+  --flow-border: #382f5d;
+  --flow-border-strong: #4c4078;
+  --flow-progress-track: #39305d;
+  --flow-success: #9b7cf3;
+  --flow-success-bright: #c0acff;
+  --flow-highlight: #d1c2ff;
+  --flow-danger: #fa779e;
+  --flow-warning: #e9ba62;
+}
+
 @theme inline {
   --font-sans: var(--flow-font-sans);
   --font-mono: var(--flow-font-mono);
@@ -196,6 +352,491 @@
   .flow-focus-ring:focus-visible {
     outline: 3px solid color-mix(in srgb, var(--flow-highlight) 55%, transparent);
     outline-offset: 3px;
+  }
+
+  .flow-theme-menu {
+    position: relative;
+  }
+
+  .flow-theme-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    border: 1px solid var(--flow-border);
+    border-radius: 0.8rem;
+    background: var(--flow-surface);
+    color: var(--flow-text);
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 750;
+    padding: 0.58rem 0.7rem;
+  }
+
+  .flow-theme-trigger:hover {
+    border-color: var(--flow-border-strong);
+    background: var(--flow-surface-soft);
+    color: var(--flow-primary-hover);
+  }
+
+  .flow-theme-dropdown {
+    position: absolute;
+    z-index: 80;
+    top: calc(100% + 0.6rem);
+    right: 0;
+    width: min(21rem, calc(100vw - 2rem));
+    padding: 0.75rem;
+    border: 1px solid var(--flow-border);
+    border-radius: 1rem;
+    background: color-mix(in srgb, var(--flow-surface-raised) 94%, transparent);
+    box-shadow: 0 18px 44px rgb(7 16 13 / 18%);
+    backdrop-filter: blur(14px);
+  }
+
+  .flow-theme-dropdown > p {
+    margin: 0 0 0.65rem;
+    padding: 0 0.3rem;
+    color: var(--flow-text-muted);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .flow-theme-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.4rem;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .flow-theme-option {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    gap: 0.5rem;
+    border: 1px solid transparent;
+    border-radius: 0.72rem;
+    background: transparent;
+    color: var(--flow-text-secondary);
+    cursor: pointer;
+    padding: 0.5rem;
+    text-align: left;
+  }
+
+  .flow-theme-option:hover {
+    background: var(--flow-surface-soft);
+    color: var(--flow-text);
+  }
+
+  .flow-theme-option.is-selected {
+    border-color: color-mix(in srgb, var(--flow-primary) 50%, var(--flow-border));
+    background: var(--flow-primary-soft);
+    color: var(--flow-primary-hover);
+  }
+
+  .flow-theme-option > svg {
+    flex: 0 0 auto;
+    margin-left: auto;
+    color: var(--flow-primary);
+  }
+
+  .flow-theme-swatch {
+    width: 1.65rem;
+    height: 1.65rem;
+    flex: 0 0 auto;
+    border: 2px solid rgb(255 255 255 / 28%);
+    border-radius: 0.58rem;
+    background: var(--swatch-surface);
+    box-shadow: inset 0 0 0 0.36rem var(--swatch-primary);
+  }
+
+  .flow-theme-swatch[data-theme-swatch="green"] { --swatch-primary: #0da678; --swatch-surface: #f7fbf9; }
+  .flow-theme-swatch[data-theme-swatch="azure"] { --swatch-primary: #2775ea; --swatch-surface: #f7faff; }
+  .flow-theme-swatch[data-theme-swatch="cyan-night"] { --swatch-primary: #14c9d7; --swatch-surface: #0b1c1f; }
+  .flow-theme-swatch[data-theme-swatch="ruby-night"] { --swatch-primary: #ee5b70; --swatch-surface: #211116; }
+  .flow-theme-swatch[data-theme-swatch="gold-night"] { --swatch-primary: #e7ad3e; --swatch-surface: #201c10; }
+  .flow-theme-swatch[data-theme-swatch="rose-night"] { --swatch-primary: #ec749f; --swatch-surface: #21111a; }
+  .flow-theme-swatch[data-theme-swatch="violet-night"] { --swatch-primary: #9b7cf3; --swatch-surface: #18142a; }
+
+  .flow-theme-option-copy {
+    display: grid;
+    min-width: 0;
+  }
+
+  .flow-theme-option-copy strong {
+    overflow: hidden;
+    color: inherit;
+    font-size: 0.76rem;
+    line-height: 1.15;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .flow-theme-option-copy small {
+    margin-top: 0.12rem;
+    color: var(--flow-text-muted);
+    font-size: 0.63rem;
+    font-weight: 650;
+    text-transform: capitalize;
+  }
+
+  .flow-date-filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.65rem;
+    margin-top: 1.5rem;
+    padding: 0.55rem;
+    border: 1px solid var(--flow-border);
+    border-radius: 0.9rem;
+    background: var(--flow-surface-soft);
+  }
+
+  .flow-date-filter-label {
+    padding-left: 0.35rem;
+    color: var(--flow-text-muted);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  .flow-date-filter-options {
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .flow-date-filter-option {
+    border: 1px solid transparent;
+    border-radius: 0.65rem;
+    background: transparent;
+    color: var(--flow-text-secondary);
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 0.5rem 0.7rem;
+  }
+
+  .flow-date-filter-option:hover {
+    background: var(--flow-surface-raised);
+    color: var(--flow-primary-hover);
+  }
+
+  .flow-date-filter-option-active {
+    border-color: var(--flow-primary);
+    background: var(--flow-primary);
+    box-shadow: 0 3px 8px color-mix(in srgb, var(--flow-primary) 22%, transparent);
+    color: var(--flow-primary-contrast);
+  }
+
+  .flow-date-filter-option-active:hover {
+    background: var(--flow-primary-hover);
+    color: var(--flow-primary-contrast);
+  }
+
+  .flow-date-filter-option:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--flow-highlight) 55%, transparent);
+    outline-offset: 2px;
+  }
+
+  .flow-analytics-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    min-width: 0;
+    margin: 0;
+    padding: 0.4rem;
+    border: 1px solid var(--flow-border);
+    border-radius: 0.9rem;
+    background: var(--flow-surface-soft);
+  }
+
+  .flow-analytics-filter button {
+    border: 0;
+    border-radius: 0.62rem;
+    background: transparent;
+    color: var(--flow-text-secondary);
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 750;
+    padding: 0.52rem 0.7rem;
+  }
+
+  .flow-analytics-filter button:hover {
+    background: var(--flow-surface-raised);
+    color: var(--flow-primary-hover);
+  }
+
+  .flow-analytics-filter .flow-analytics-filter-active {
+    background: var(--flow-primary);
+    box-shadow: 0 3px 8px color-mix(in srgb, var(--flow-primary) 22%, transparent);
+    color: var(--flow-primary-contrast);
+  }
+
+  .flow-analytics-filter .flow-analytics-filter-active:hover {
+    background: var(--flow-primary-hover);
+    color: var(--flow-primary-contrast);
+  }
+
+  .flow-analytics-kpi,
+  .flow-analytics-card {
+    border: 1px solid var(--flow-border);
+    border-radius: 1rem;
+    background: var(--flow-surface-raised);
+    box-shadow: 0 16px 40px rgb(7 16 13 / 6%);
+  }
+
+  .flow-analytics-kpi {
+    padding: 1.25rem;
+  }
+
+  .flow-analytics-kpi p,
+  .flow-analytics-card p {
+    margin: 0;
+    color: var(--flow-text-secondary);
+    font-size: 0.78rem;
+  }
+
+  .flow-analytics-kpi strong {
+    display: block;
+    margin-top: 0.55rem;
+    color: var(--flow-text);
+    font-size: 1.8rem;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+
+  .flow-analytics-card {
+    min-height: 22rem;
+    padding: 1.25rem;
+  }
+
+  .flow-analytics-card h2 {
+    margin: 0;
+    color: var(--flow-text);
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .flow-analytics-card > div:first-child p {
+    margin-top: 0.25rem;
+  }
+
+  .flow-chart-canvas {
+    height: 16rem;
+    margin-top: 1rem;
+  }
+
+  .flow-gauge-chart {
+    position: relative;
+    height: 16rem;
+  }
+
+  .flow-gauge-value {
+    position: absolute;
+    top: 53%;
+    left: 50%;
+    display: grid;
+    transform: translate(-50%, -50%);
+    place-items: center;
+  }
+
+  .flow-gauge-value strong {
+    color: var(--flow-text);
+    font-size: 1.8rem;
+    letter-spacing: -0.04em;
+  }
+
+  .flow-gauge-value span {
+    margin-top: -0.05rem;
+    color: var(--flow-text-muted);
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+
+  .dark .flow-analytics-kpi,
+  .dark .flow-analytics-card {
+    box-shadow: 0 16px 40px rgb(0 0 0 / 24%);
+  }
+
+  @media (max-width: 640px) {
+    .flow-analytics-filter {
+      width: 100%;
+    }
+
+    .flow-analytics-filter button {
+      flex: 1;
+      padding-inline: 0.45rem;
+    }
+  }
+
+  .flow-calendar {
+    --fc-border-color: var(--flow-border);
+    --fc-page-bg-color: transparent;
+    --fc-neutral-bg-color: var(--flow-surface-soft);
+    --fc-today-bg-color: color-mix(in srgb, var(--flow-primary-soft) 68%, transparent);
+    --fc-button-text-color: var(--flow-text-secondary);
+    --fc-button-bg-color: var(--flow-surface-raised);
+    --fc-button-border-color: var(--flow-border);
+    --fc-button-hover-bg-color: var(--flow-primary-soft);
+    --fc-button-hover-border-color: var(--flow-primary-soft);
+    --fc-button-active-bg-color: var(--flow-primary);
+    --fc-button-active-border-color: var(--flow-primary);
+    --fc-event-border-color: transparent;
+    --fc-event-text-color: var(--flow-primary-contrast);
+    font-family: var(--flow-font-sans);
+  }
+
+  .flow-calendar .fc-toolbar {
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .flow-calendar .fc-toolbar-title {
+    color: var(--flow-text);
+    font-size: 1.25rem;
+    font-weight: 750;
+    letter-spacing: -0.025em;
+  }
+
+  .flow-calendar .fc-button {
+    border-radius: 0.7rem !important;
+    box-shadow: none !important;
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+    padding: 0.62rem 0.82rem;
+    text-transform: capitalize;
+  }
+
+  .flow-calendar .fc-button-group {
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  .flow-calendar .fc-button:focus-visible {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--flow-highlight) 45%, transparent) !important;
+  }
+
+  .flow-calendar .fc-button-primary:not(:disabled).fc-button-active,
+  .flow-calendar .fc-button-primary:not(:disabled):active {
+    color: var(--flow-primary-contrast) !important;
+  }
+
+  .flow-calendar .fc-col-header-cell {
+    border: 0;
+    padding: 0 0 0.7rem;
+  }
+
+  .flow-calendar .fc-col-header-cell-cushion {
+    color: var(--flow-text-muted);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .flow-calendar .fc-scrollgrid {
+    overflow: hidden;
+    border: 1px solid var(--flow-border);
+    border-radius: 1rem;
+  }
+
+  .flow-calendar .fc-daygrid-day-frame {
+    min-height: 7.25rem;
+    padding: 0.35rem;
+  }
+
+  .flow-calendar .fc-daygrid-day-number {
+    display: grid;
+    width: 1.85rem;
+    height: 1.85rem;
+    place-items: center;
+    border-radius: 0.6rem;
+    color: var(--flow-text-secondary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .flow-calendar .fc-day-today .fc-daygrid-day-number {
+    background: var(--flow-primary);
+    color: var(--flow-primary-contrast);
+  }
+
+  .flow-calendar .fc-daygrid-day:hover {
+    background: color-mix(in srgb, var(--flow-primary-soft) 38%, transparent);
+  }
+
+  .flow-calendar .fc-event {
+    margin: 0.18rem 0.12rem;
+    border-radius: 0.55rem;
+    box-shadow: 0 2px 6px rgb(7 16 13 / 10%);
+    cursor: pointer;
+  }
+
+  .flow-calendar .fc-event-main {
+    padding: 0.08rem 0.22rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  .flow-calendar .flow-calendar-event-open {
+    background: var(--flow-primary);
+  }
+
+  .flow-calendar .flow-calendar-event-completed {
+    background: var(--flow-primary-hover);
+    opacity: 0.72;
+  }
+
+  .flow-calendar .fc-daygrid-more-link {
+    color: var(--flow-primary);
+    font-size: 0.72rem;
+    font-weight: 800;
+  }
+
+  @media (max-width: 640px) {
+    .flow-calendar .fc-toolbar {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .flow-calendar .fc-toolbar-chunk {
+      display: flex;
+      justify-content: center;
+    }
+
+    .flow-calendar .fc-daygrid-day-frame {
+      min-height: 5.1rem;
+    }
+
+    .flow-calendar .fc-event-main {
+      overflow: hidden;
+      padding: 0.14rem;
+      font-size: 0;
+    }
+
+    .flow-calendar .fc-event-main::before {
+      display: block;
+      width: 0.35rem;
+      height: 0.35rem;
+      margin: 0.1rem;
+      border-radius: 999px;
+      background: currentColor;
+      content: "";
+    }
   }
 
   .cl-modalBackdrop {

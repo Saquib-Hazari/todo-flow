@@ -11,12 +11,17 @@ export const Route = createRootRoute({
 			{
 				charSet: "utf-8",
 			},
-				{
-					name: "viewport",
-					content: "width=device-width, initial-scale=1",
-				},
-			{ name: "description", content: "Flow helps you organize tasks into a calm, focused daily plan." },
+			{
+				name: "viewport",
+				content: "width=device-width, initial-scale=1",
+			},
+			{
+				name: "description",
+				content:
+					"Flow helps you organize tasks into a calm, focused daily plan.",
+			},
 			{ name: "application-name", content: "Flow" },
+			{ name: "color-scheme", content: "light dark" },
 			{ name: "theme-color", content: "#0da678" },
 			{ name: "referrer", content: "strict-origin-when-cross-origin" },
 		],
@@ -45,17 +50,22 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 							(() => {
 								try {
 									const savedTheme = localStorage.getItem("flow-theme");
-									const prefersDark = window.matchMedia(
-										"(prefers-color-scheme: dark)"
-									).matches;
+									const darkThemes = [
+										"cyan-night",
+										"ruby-night",
+										"gold-night",
+										"rose-night",
+										"violet-night",
+									];
+									const validThemes = ["green", "azure", ...darkThemes];
+									const theme = validThemes.includes(savedTheme)
+										? savedTheme
+										: savedTheme === "dark"
+											? "cyan-night"
+											: "green";
 
-									const theme =
-										savedTheme || (prefersDark ? "dark" : "light");
-
-									document.documentElement.classList.toggle(
-										"dark",
-										theme === "dark"
-									);
+									document.documentElement.dataset.flowTheme = theme;
+									document.documentElement.classList.toggle("dark", darkThemes.includes(theme));
 								} catch {
 									// Fall back to light mode if storage is unavailable.
 								}

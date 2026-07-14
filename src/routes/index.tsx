@@ -1,30 +1,48 @@
 import { Show, SignInButton, SignUpButton } from "@clerk/tanstack-react-start";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AuthActions } from "../components/AuthAction.tsx";
-import { Toggle } from "../components/Toggle.tsx";
+import { ThemeMenu } from "../components/ThemeMenu.tsx";
 
-const SITE_URL = import.meta.env.VITE_APP_URL ?? "https://todo-flows.netlify.app";
+const SITE_URL = (
+	import.meta.env.VITE_APP_URL ?? "https://todo-flows.netlify.app"
+).replace(/\/$/, "");
 const SHARE_IMAGE = `${SITE_URL}/homepage.png`;
 
 export const Route = createFileRoute("/")({
 	head: () => ({
 		title: "Flow — A calmer way to get things done",
 		meta: [
-			{ name: "description", content: "Turn scattered tasks into a clear, focused plan with Flow." },
+			{
+				name: "description",
+				content: "Turn scattered tasks into a clear, focused plan with Flow.",
+			},
 			{ property: "og:site_name", content: "Flow" },
-			{ property: "og:title", content: "Flow — A calmer way to get things done" },
-			{ property: "og:description", content: "Turn scattered tasks into a clear, focused plan with Flow." },
+			{
+				property: "og:title",
+				content: "Flow — A calmer way to get things done",
+			},
+			{
+				property: "og:description",
+				content: "Turn scattered tasks into a clear, focused plan with Flow.",
+			},
 			{ property: "og:type", content: "website" },
 			{ property: "og:url", content: SITE_URL },
 			{ property: "og:image", content: SHARE_IMAGE },
-			{ property: "og:image:width", content: "1200" },
-			{ property: "og:image:height", content: "630" },
+			{ property: "og:image:width", content: "3360" },
+			{ property: "og:image:height", content: "2100" },
 			{ property: "og:image:alt", content: "Flow task management app" },
 			{ name: "twitter:card", content: "summary_large_image" },
-			{ name: "twitter:title", content: "Flow — A calmer way to get things done" },
-			{ name: "twitter:description", content: "Turn scattered tasks into a clear, focused plan with Flow." },
+			{
+				name: "twitter:title",
+				content: "Flow — A calmer way to get things done",
+			},
+			{
+				name: "twitter:description",
+				content: "Turn scattered tasks into a clear, focused plan with Flow.",
+			},
 			{ name: "twitter:image", content: SHARE_IMAGE },
 		],
+		links: [{ rel: "canonical", href: SITE_URL }],
 	}),
 	component: HomePage,
 });
@@ -49,7 +67,7 @@ function HomePage() {
 						How it works
 					</a>
 
-					<Toggle />
+					<ThemeMenu />
 
 					<div>
 						<AuthActions />

@@ -1,7 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/signin")({
-	head: () => ({ title: "Sign in — Flow", meta: [{ name: "robots", content: "noindex, nofollow, noarchive" }] }),
+	head: () => ({
+		title: "Sign in — Flow",
+		meta: [{ name: "robots", content: "noindex, nofollow, noarchive" }],
+	}),
 	component: RouteComponent,
 });
 

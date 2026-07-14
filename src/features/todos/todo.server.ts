@@ -5,35 +5,37 @@ export async function createTodoRecord(data: {
 	title: string;
 	description?: string;
 	tag: "work" | "today" | "personal" | "workout";
+	dueDate: string;
 }) {
-		const { isAuthenticated, userId } = await auth();
+	const { isAuthenticated, userId } = await auth();
 
-		if (!isAuthenticated || !userId) {
-			throw new Error("Unauthorized");
-		}
+	if (!isAuthenticated || !userId) {
+		throw new Error("Unauthorized");
+	}
 
-		const todoRef = firestore
-			.collection("users")
-			.doc(userId)
-			.collection("todos")
-			.doc();
+	const todoRef = firestore
+		.collection("users")
+		.doc(userId)
+		.collection("todos")
+		.doc();
 
-		await todoRef.set({
-			id: todoRef.id,
-			title: data.title,
-			description: data.description ?? "",
-			tag: data.tag,
-			completed: false,
-			position: Date.now(),
-			createdAt: new Date(),
-			updatedAt: new Date(),
-		});
+	await todoRef.set({
+		id: todoRef.id,
+		title: data.title,
+		description: data.description ?? "",
+		tag: data.tag,
+		dueDate: data.dueDate,
+		completed: false,
+		position: Date.now(),
+		createdAt: new Date(),
+		updatedAt: new Date(),
+	});
 
-		return {
-			id: todoRef.id,
-			...data,
-			completed: false,
-		};
+	return {
+		id: todoRef.id,
+		...data,
+		completed: false,
+	};
 }
 
 export async function listTodoRecords() {
@@ -54,6 +56,7 @@ export async function listTodoRecords() {
 			title: String(data.title ?? ""),
 			description: data.description ? String(data.description) : undefined,
 			tag: data.tag as "work" | "today" | "personal" | "workout",
+			dueDate: typeof data.dueDate === "string" ? data.dueDate : "",
 			completed: Boolean(data.completed),
 		};
 	});
@@ -69,11 +72,24 @@ export async function deleteTodoRecord(todoId: string) {
 	await (await userTodosRef()).doc(todoId).delete();
 }
 
+export async function updateTodoCompletionRecord(data: {
+	id: string;
+	completed: boolean;
+}) {
+	await (await userTodosRef()).doc(data.id).update({
+		completed: data.completed,
+		updatedAt: new Date(),
+	});
+}
+
 export async function clearTodoRecords() {
 	const snapshot = await (await userTodosRef()).get();
-	const batch = firestore.batch();
-	snapshot.docs.forEach((doc) => {
-		batch.delete(doc.ref);
-	});
-	await batch.commit();
+
+	for (let index = 0; index < snapshot.docs.length; index += 500) {
+		const batch = firestore.batch();
+		for (const doc of snapshot.docs.slice(index, index + 500)) {
+			batch.delete(doc.ref);
+		}
+		await batch.commit();
+	}
 }

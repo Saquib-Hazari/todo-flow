@@ -1,21 +1,49 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import * as Label from "@radix-ui/react-label";
 import * as Select from "@radix-ui/react-select";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getLocalDateKey } from "./todo.utils.ts";
 import type { Todo, TodoTags } from "./types.ts";
 
 type Props = {
 	onCreate: (todo: Todo) => Promise<void> | void;
 	defaultTag?: TodoTags;
+	defaultDueDate?: string;
+	open?: boolean;
+	onOpenChange?: (open: boolean) => void;
 };
 
-export function TodoDialog({ onCreate, defaultTag = "today" }: Props) {
-	const [open, setOpen] = useState(false);
+export function TodoDialog({
+	onCreate,
+	defaultTag = "today",
+	defaultDueDate = getLocalDateKey(),
+	open: controlledOpen,
+	onOpenChange,
+}: Props) {
+	const [uncontrolledOpen, setUncontrolledOpen] = useState(false);
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
 	const [tag, setTag] = useState<TodoTags>(defaultTag);
+	const [dueDate, setDueDate] = useState(defaultDueDate);
 	const [error, setError] = useState<string | null>(null);
 	const [saving, setSaving] = useState(false);
+	const open = controlledOpen ?? uncontrolledOpen;
+
+	useEffect(() => {
+		if (controlledOpen) {
+			setTag(defaultTag);
+			setDueDate(defaultDueDate);
+		}
+	}, [controlledOpen, defaultDueDate, defaultTag]);
+
+	function handleOpenChange(nextOpen: boolean) {
+		if (controlledOpen === undefined) setUncontrolledOpen(nextOpen);
+		if (nextOpen) {
+			setTag(defaultTag);
+			setDueDate(defaultDueDate);
+		}
+		onOpenChange?.(nextOpen);
+	}
 
 	async function submit(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
@@ -33,13 +61,14 @@ export function TodoDialog({ onCreate, defaultTag = "today" }: Props) {
 				title: cleanTitle,
 				description: description.trim() || undefined,
 				tag,
+				dueDate,
 				completed: false,
 			});
 
 			setTitle("");
 			setDescription("");
 			setTag(defaultTag);
-			setOpen(false);
+			handleOpenChange(false);
 		} catch (cause) {
 			const message = cause instanceof Error ? cause.message : "";
 			setError(
@@ -54,13 +83,7 @@ export function TodoDialog({ onCreate, defaultTag = "today" }: Props) {
 	}
 
 	return (
-		<Dialog.Root
-			open={open}
-			onOpenChange={(nextOpen) => {
-				setOpen(nextOpen);
-				if (nextOpen) setTag(defaultTag);
-			}}
-		>
+		<Dialog.Root open={open} onOpenChange={handleOpenChange}>
 			<Dialog.Trigger asChild>
 				<button
 					type="button"
@@ -128,6 +151,24 @@ export function TodoDialog({ onCreate, defaultTag = "today" }: Props) {
 						</div>
 
 						<div>
+							<Label.Root
+								htmlFor="todo-due-date"
+								className="mb-2 block text-sm font-semibold"
+							>
+								Due date
+							</Label.Root>
+
+							<input
+								id="todo-due-date"
+								type="date"
+								value={dueDate}
+								onChange={(event) => setDueDate(event.target.value)}
+								required
+								className="w-full rounded-xl border border-flow-border bg-flow-surface-raised px-4 py-3 text-sm outline-none focus:border-flow-primary"
+							/>
+						</div>
+
+						<div>
 							<Label.Root className="mb-2 block text-sm font-semibold">
 								Tag
 							</Label.Root>
@@ -136,7 +177,10 @@ export function TodoDialog({ onCreate, defaultTag = "today" }: Props) {
 								value={tag}
 								onValueChange={(value) => setTag(value as TodoTags)}
 							>
-								<Select.Trigger className="flex w-full items-center justify-between rounded-xl border border-flow-border bg-flow-surface-raised px-4 py-3 text-sm">
+								<Select.Trigger
+									aria-label="Tag"
+									className="flex w-full items-center justify-between rounded-xl border border-flow-border bg-flow-surface-raised px-4 py-3 text-sm"
+								>
 									<Select.Value />
 									<Select.Icon>⌄</Select.Icon>
 								</Select.Trigger>
