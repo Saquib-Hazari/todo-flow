@@ -49,15 +49,19 @@ export function filterTodosByDueDate(
 		return todos.filter((todo) => todo.dueDate === startKey);
 	}
 
-	const endDate = new Date(startDate);
-	endDate.setDate(endDate.getDate() + (filter === "tomorrow" ? 1 : 7));
-	const endKey = getLocalDateKey(endDate);
+	const tomorrowDate = new Date(startDate);
+	tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+	const tomorrowKey = getLocalDateKey(tomorrowDate);
 
 	if (filter === "tomorrow") {
-		return todos.filter((todo) => todo.dueDate === endKey);
+		return todos.filter((todo) => todo.dueDate === tomorrowKey);
 	}
 
+	const endDate = new Date(startDate);
+	endDate.setDate(endDate.getDate() + 7);
+	const endKey = getLocalDateKey(endDate);
+
 	return todos.filter(
-		(todo) => todo.dueDate >= startKey && todo.dueDate <= endKey,
+		(todo) => todo.dueDate >= tomorrowKey && todo.dueDate <= endKey,
 	);
 }

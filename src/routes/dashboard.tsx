@@ -160,6 +160,7 @@ function DashboardPage() {
 				...previous,
 				view: "todos",
 				filter: nextFilter,
+				dueDateFilter: "all",
 			}),
 		});
 	}
@@ -204,10 +205,11 @@ function DashboardPage() {
 		dueDateFilter === "tomorrow" || dueDateFilter === "next7Days"
 			? getLocalDateKey(new Date(Date.now() + 24 * 60 * 60 * 1000))
 			: getLocalDateKey();
-	const visibleTodos = filterTodosByDueDate(
-		filterTodos(todos, filter),
-		dueDateFilter,
-	);
+	const todosForActiveDate =
+		filter === "today" && dueDateFilter !== "all"
+			? todos
+			: filterTodos(todos, filter);
+	const visibleTodos = filterTodosByDueDate(todosForActiveDate, dueDateFilter);
 
 	const handleCreateTodo = async (todo: Todo) => {
 		const savedTodo = await createTodoServer({

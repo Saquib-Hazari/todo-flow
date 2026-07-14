@@ -58,7 +58,7 @@ describe("filterTodosByDueDate", () => {
 		).toEqual(["2"]);
 		expect(
 			filterTodosByDueDate(todos, "next7Days", today).map((todo) => todo.id),
-		).toEqual(["1", "2", "3"]);
+		).toEqual(["2", "3"]);
 	});
 
 	it("handles a date range that crosses into a new year", () => {
