@@ -483,6 +483,135 @@ html[data-flow-theme="violet-night"] {
     text-transform: capitalize;
   }
 
+  .flow-date-picker {
+    position: relative;
+  }
+
+  .flow-date-picker-trigger {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid var(--flow-border);
+    border-radius: 0.8rem;
+    background: var(--flow-surface-raised);
+    color: var(--flow-text);
+    cursor: pointer;
+    font-size: 0.875rem;
+    padding: 0.72rem 1rem;
+    text-align: left;
+  }
+
+  .flow-date-picker-trigger:hover,
+  .flow-date-picker-trigger:focus-visible {
+    border-color: var(--flow-primary);
+  }
+
+  .flow-date-picker-trigger:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--flow-highlight) 45%, transparent);
+    outline-offset: 2px;
+  }
+
+  .flow-date-picker-trigger svg {
+    color: var(--flow-primary);
+  }
+
+  .flow-date-picker-popover {
+    position: absolute;
+    z-index: 70;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    width: min(20rem, calc(100vw - 4rem));
+    padding: 0.85rem;
+    border: 1px solid var(--flow-border);
+    border-radius: 1rem;
+    background: var(--flow-surface-raised);
+    box-shadow: 0 18px 44px rgb(7 16 13 / 18%);
+  }
+
+  .flow-date-picker-header {
+    display: grid;
+    grid-template-columns: 2rem 1fr 2rem;
+    align-items: center;
+    margin-bottom: 0.8rem;
+  }
+
+  .flow-date-picker-header strong {
+    color: var(--flow-text);
+    font-size: 0.85rem;
+    text-align: center;
+  }
+
+  .flow-date-picker-header button {
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    border: 0;
+    border-radius: 0.55rem;
+    background: transparent;
+    color: var(--flow-text-secondary);
+    cursor: pointer;
+  }
+
+  .flow-date-picker-header button:hover {
+    background: var(--flow-primary-soft);
+    color: var(--flow-primary-hover);
+  }
+
+  .flow-date-picker-weekdays,
+  .flow-date-picker-days {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 0.2rem;
+  }
+
+  .flow-date-picker-weekdays {
+    margin-bottom: 0.3rem;
+  }
+
+  .flow-date-picker-weekdays span {
+    color: var(--flow-text-muted);
+    font-size: 0.62rem;
+    font-weight: 800;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .flow-date-picker-day {
+    display: grid;
+    aspect-ratio: 1;
+    place-items: center;
+    border: 0;
+    border-radius: 0.55rem;
+    background: transparent;
+    color: var(--flow-text-secondary);
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .flow-date-picker-day:hover {
+    background: var(--flow-primary-soft);
+    color: var(--flow-primary-hover);
+  }
+
+  .flow-date-picker-day.is-outside {
+    color: var(--flow-text-subtle);
+    opacity: 0.45;
+  }
+
+  .flow-date-picker-day.is-today {
+    box-shadow: inset 0 0 0 1px var(--flow-primary);
+    color: var(--flow-primary-hover);
+  }
+
+  .flow-date-picker-day.is-selected {
+    background: var(--flow-primary);
+    box-shadow: none;
+    color: var(--flow-primary-contrast);
+  }
+
   .flow-date-filter {
     display: flex;
     flex-wrap: wrap;

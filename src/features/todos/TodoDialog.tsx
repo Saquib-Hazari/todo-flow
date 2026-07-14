@@ -2,6 +2,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as Label from "@radix-ui/react-label";
 import * as Select from "@radix-ui/react-select";
 import { useEffect, useState } from "react";
+import { DatePicker } from "../../components/DatePicker.tsx";
 import { getLocalDateKey } from "./todo.utils.ts";
 import type { Todo, TodoTags } from "./types.ts";
 
@@ -158,13 +159,10 @@ export function TodoDialog({
 								Due date
 							</Label.Root>
 
-							<input
+							<DatePicker
 								id="todo-due-date"
-								type="date"
 								value={dueDate}
-								onChange={(event) => setDueDate(event.target.value)}
-								required
-								className="w-full rounded-xl border border-flow-border bg-flow-surface-raised px-4 py-3 text-sm outline-none focus:border-flow-primary"
+								onChange={setDueDate}
 							/>
 						</div>
 

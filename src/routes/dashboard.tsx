@@ -206,6 +206,9 @@ function DashboardPage() {
 				onClose={() => setSidebarOpen(false)}
 			/>
 			<div className="min-w-0 flex-1">
+				<div className="hidden justify-end border-b border-flow-border bg-flow-surface/95 px-6 py-4 backdrop-blur lg:flex">
+					<ThemeMenu />
+				</div>
 				<div
 					className={`sticky top-0 z-20 flex items-center justify-between border-b border-flow-border bg-flow-surface/95 px-5 py-4 backdrop-blur transition-transform duration-300 lg:hidden ${
 						mobileHeaderVisible ? "translate-y-0" : "-translate-y-full"

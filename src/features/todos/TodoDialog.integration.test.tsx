@@ -16,9 +16,8 @@ describe("TodoDialog integration", () => {
 		fireEvent.change(screen.getByLabelText("Title"), {
 			target: { value: "Prepare weekly review" },
 		});
-		fireEvent.change(screen.getByLabelText("Due date"), {
-			target: { value: "2026-07-16" },
-		});
+		fireEvent.click(screen.getByLabelText("Due date"));
+		fireEvent.click(screen.getByRole("button", { name: /\b16\b/ }));
 		fireEvent.click(screen.getByRole("button", { name: "Submit" }));
 
 		await waitFor(() => {
