@@ -16,7 +16,7 @@ type Props = {
 
 export function TodoDialog({
 	onCreate,
-	defaultTag = "today",
+	defaultTag = "work",
 	defaultDueDate = getLocalDateKey(),
 	open: controlledOpen,
 	onOpenChange,
@@ -186,19 +186,19 @@ export function TodoDialog({
 								<Select.Portal>
 									<Select.Content className="z-[60] overflow-hidden rounded-xl border border-flow-border bg-flow-surface p-1 shadow-xl">
 										<Select.Viewport>
-											{(
-												["work", "today", "personal", "workout"] as TodoTags[]
-											).map((item) => (
-												<Select.Item
-													key={item}
-													value={item}
-													className="cursor-pointer rounded-lg px-3 py-2 text-sm outline-none data-[highlighted]:bg-flow-primary-soft"
-												>
-													<Select.ItemText>
-														{item[0].toUpperCase() + item.slice(1)}
-													</Select.ItemText>
-												</Select.Item>
-											))}
+											{(["work", "personal", "workout"] as TodoTags[]).map(
+												(item) => (
+													<Select.Item
+														key={item}
+														value={item}
+														className="cursor-pointer rounded-lg px-3 py-2 text-sm outline-none data-[highlighted]:bg-flow-primary-soft"
+													>
+														<Select.ItemText>
+															{item[0].toUpperCase() + item.slice(1)}
+														</Select.ItemText>
+													</Select.Item>
+												),
+											)}
 										</Select.Viewport>
 									</Select.Content>
 								</Select.Portal>

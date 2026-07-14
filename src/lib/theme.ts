@@ -23,6 +23,9 @@ export function applyTheme(theme: ThemeId) {
 	document.documentElement.dataset.flowTheme = theme;
 	document.documentElement.classList.toggle("dark", option.mode === "dark");
 	localStorage.setItem("flow-theme", theme);
+	window.dispatchEvent(
+		new CustomEvent<ThemeId>("flow-theme-change", { detail: theme }),
+	);
 }
 
 export function getSavedTheme(): ThemeId {

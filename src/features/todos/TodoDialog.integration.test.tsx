@@ -25,7 +25,7 @@ describe("TodoDialog integration", () => {
 				id: "todo-123",
 				title: "Prepare weekly review",
 				description: undefined,
-				tag: "today",
+				tag: "work",
 				dueDate: "2026-07-16",
 				completed: false,
 			});

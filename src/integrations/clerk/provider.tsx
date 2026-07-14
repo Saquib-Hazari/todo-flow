@@ -16,15 +16,15 @@ export default function AppClerkProvider({
 			afterSignOutUrl="/"
 			appearance={{
 				variables: {
-					colorPrimary: "#10b981",
-					colorPrimaryForeground: "#ffffff",
-					colorBackground: "#0d1b16",
-					colorForeground: "#f5fbf8",
-					colorMutedForeground: "#91a49c",
-					colorInput: "#10211a",
-					colorInputForeground: "#f5fbf8",
-					colorBorder: "#20372e",
-					colorNeutral: "#234136",
+					colorPrimary: "var(--flow-primary)",
+					colorPrimaryForeground: "var(--flow-primary-contrast)",
+					colorBackground: "var(--flow-surface)",
+					colorForeground: "var(--flow-text)",
+					colorMutedForeground: "var(--flow-text-secondary)",
+					colorInput: "var(--flow-surface-raised)",
+					colorInputForeground: "var(--flow-text)",
+					colorBorder: "var(--flow-border)",
+					colorNeutral: "var(--flow-border-strong)",
 					borderRadius: "0.75rem",
 					fontFamily: "inherit",
 				},
@@ -41,8 +41,16 @@ export default function AppClerkProvider({
 					socialButtonsBlockButton:
 						"!opacity-100 rounded-xl border !border-flow-border-strong !bg-flow-surface-raised !text-flow-text hover:bg-flow-surface-soft",
 					socialButtonsBlockButtonText:
-						"!opacity-100 !text-[#f5fbf8] font-semibold",
+						"!opacity-100 !text-flow-text font-semibold",
 					socialButtonsProviderIcon: "!opacity-100",
+					userButtonPopoverCard:
+						"overflow-hidden rounded-2xl !border-flow-border !bg-flow-surface !shadow-xl",
+					userButtonPopoverMain: "p-2",
+					userButtonPopoverActionButton:
+						"rounded-xl !text-flow-text hover:!bg-flow-surface-soft",
+					userButtonPopoverActionButton__signOut:
+						"!text-flow-danger hover:!bg-flow-primary-soft",
+					userButtonPopoverActionButtonIcon: "!text-flow-primary",
 					footer: "hidden",
 				},
 			}}

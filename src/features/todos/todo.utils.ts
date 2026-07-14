@@ -28,7 +28,9 @@ export function getGreeting(hour: number) {
 export function filterTodos(todos: Todo[], filter: TodoFilter) {
 	if (filter === "all") return todos;
 	if (filter === "completed") return todos.filter((todo) => todo.completed);
-	if (filter === "today") return todos.filter((todo) => todo.tag === "today");
+	if (filter === "today") {
+		return todos.filter((todo) => todo.dueDate === getLocalDateKey());
+	}
 	return todos.filter((todo) => todo.tag === filter);
 }
 

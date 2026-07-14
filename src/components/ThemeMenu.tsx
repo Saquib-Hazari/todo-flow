@@ -14,7 +14,17 @@ export function ThemeMenu() {
 	const menuRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
-		setTheme(getSavedTheme());
+		const savedTheme = getSavedTheme();
+		applyTheme(savedTheme);
+		setTheme(savedTheme);
+
+		function syncTheme(event: Event) {
+			const nextTheme = (event as CustomEvent<ThemeId>).detail;
+			if (nextTheme) setTheme(nextTheme);
+		}
+
+		window.addEventListener("flow-theme-change", syncTheme);
+		return () => window.removeEventListener("flow-theme-change", syncTheme);
 	}, []);
 
 	useEffect(() => {

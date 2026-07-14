@@ -17,7 +17,7 @@ const todos: Todo[] = [
 	{
 		id: "2",
 		title: "Today",
-		tag: "today",
+		tag: "work",
 		dueDate: "2026-07-15",
 		completed: true,
 	},
@@ -80,7 +80,7 @@ describe("filterTodosByDueDate", () => {
 			{
 				id: "unscheduled",
 				title: "Unscheduled task",
-				tag: "today",
+				tag: "work",
 				dueDate: "",
 				completed: false,
 			},

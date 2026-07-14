@@ -3,7 +3,6 @@
 > A calmer way to organize tasks, protect focus, and make progress every day. ✨
 
 <p align="center">
-  <a href="https://todo-flows.netlify.app/">Live Demo</a> ·
   <a href="https://www.linkedin.com/in/hazari-saquib/">LinkedIn</a> ·
   <a href="https://x.com/saquib7298">Twitter / X</a>
 </p>
@@ -12,15 +11,15 @@
   <img src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white" alt="React 19" />
   <img src="https://img.shields.io/badge/TypeScript-Strict-3178C6?logo=typescript&logoColor=white" alt="TypeScript" />
   <img src="https://img.shields.io/badge/TanStack_Start-SSR-FF4154" alt="TanStack Start" />
-  <img src="https://img.shields.io/badge/Firebase-Firestore-FFCA28?logo=firebase&logoColor=black" alt="Firebase Firestore" />
+  <img src="https://img.shields.io/badge/Storage-LocalStorage-4F46E5" alt="Browser Local Storage" />
   <img src="https://img.shields.io/badge/Clerk-Authentication-6C47FF" alt="Clerk authentication" />
 </p>
 
 ## About the project
 
-Flow is a full-stack productivity application designed around a simple idea: fewer distractions, clearer priorities, and a more intentional daily workflow.
+Flow is a frontend-first productivity application designed around a simple idea: fewer distractions, clearer priorities, and a more intentional daily workflow.
 
-It combines a focused todo experience with authentication, persistent cloud storage, responsive navigation, theme switching, filtering, and drag-and-drop organization.
+It combines a focused todo experience with responsive navigation, theme switching, filtering, analytics, calendar planning, and browser-local persistence.
 
 ## Preview
 
@@ -32,15 +31,15 @@ It combines a focused todo experience with authentication, persistent cloud stor
 ## Highlights
 
 - 🔐 Secure authentication with Clerk.
-- ☁️ Persistent, user-scoped todos stored in Cloud Firestore.
+- 💾 Todos stored locally in the browser with localStorage.
 - ✅ Create, complete, reorder, delete, and clear todos.
 - 🏷️ Filter tasks by Today, Completed, Personal, Work, and Workout.
 - 🖱️ Smooth drag-and-drop sorting powered by `dnd-kit`.
 - 🌗 Light and dark themes with persisted preferences.
 - 📱 Responsive sidebar with a mobile hamburger menu.
 - ♿ Accessible controls with semantic HTML, labels, ARIA states, and keyboard-friendly interactions.
-- 🚀 Server-side rendering and type-safe server functions with TanStack Start.
-- 🧪 Automated tests for greeting and todo-filter edge cases.
+- 🚀 Vercel-ready TanStack Start deployment with Nitro.
+- 🧪 Automated unit and integration tests for todo flows and date-filter edge cases.
 
 ## Screens and experience
 
@@ -58,10 +57,10 @@ The application is built around three focused experiences:
 | Language       | TypeScript with strict checking                                   |
 | Framework      | TanStack Start and TanStack Router                                |
 | Authentication | Clerk                                                             |
-| Database       | Firebase Admin SDK and Cloud Firestore                            |
+| Storage        | Browser localStorage                                              |
 | Interactions   | Radix UI, `dnd-kit`, Lucide icons                                 |
 | Tooling        | Vite, Vitest, Biome                                               |
-| Deployment     | Compatible with Netlify, Railway, Vercel, and other Vite runtimes |
+| Deployment     | Vercel with Nitro                                                 |
 
 ## Architecture
 
@@ -70,19 +69,11 @@ React UI
   ├─ TanStack Router routes
   ├─ Accessible reusable components
   ├─ Todo dialog and sortable task list
-  └─ Clerk client state
-
-TanStack Start server functions
-  ├─ Authentication checks through Clerk middleware
-  ├─ User-scoped todo mutations
-  └─ Firebase Admin / Firestore persistence
+  ├─ Clerk client state
+  └─ localStorage todo persistence
 ```
 
-Todos are stored per authenticated user:
-
-```text
-users/{clerkUserId}/todos/{todoId}
-```
+Todos stay on the device and browser where they were created. Clearing browser storage or switching browsers will not carry tasks across devices.
 
 ## Getting started
 
@@ -90,8 +81,6 @@ users/{clerkUserId}/todos/{todoId}
 
 - Node.js 20+
 - A Clerk application
-- A Firebase project with Cloud Firestore enabled
-- A Firebase Admin service-account credential
 
 ### Install
 
@@ -108,13 +97,10 @@ Create `.env.local`:
 ```env
 VITE_CLERK_PUBLISHABLE_KEY=pk_test_...
 CLERK_SECRET_KEY=sk_test_...
-
-FIREBASE_PROJECT_ID=your-project-id
-FIREBASE_CLIENT_EMAIL=firebase-adminsdk@your-project.iam.gserviceaccount.com
-FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
+VITE_APP_URL=https://your-project.vercel.app
 ```
 
-Never commit `.env.local` or a Firebase service-account JSON file.
+Never commit `.env.local`.
 
 ### Run locally
 
@@ -142,15 +128,14 @@ npm run build
 
 ## Deployment
 
-Flow uses TanStack Start server functions, so deploy it as a full-stack SSR application rather than as a static-only site. Netlify is a strong low-cost option because it has an official TanStack Start integration.
+Flow deploys to Vercel with the Nitro Vite plugin. Todo data remains in each visitor's local browser storage, so no database or Firebase environment variables are needed.
 
 Before deploying:
 
-- Add all server and client environment variables to the hosting provider.
+- Add `VITE_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` to Vercel.
 - Use production Clerk keys and configure the production Clerk domain.
-- Enable Cloud Firestore for the Firebase project.
-- Configure the production domain in Clerk and Firebase.
-- Add a real canonical URL and sitemap before public launch.
+- Set `VITE_APP_URL` to your production Vercel URL. This is required for correct canonical, Open Graph, Twitter, and share-image links.
+- Import the Git repository into Vercel; it will detect TanStack Start/Nitro automatically.
 
 ## Roadmap
 

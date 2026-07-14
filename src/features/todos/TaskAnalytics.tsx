@@ -29,12 +29,11 @@ const periods: Array<{ label: string; value: AnalyticsPeriod }> = [
 	{ label: "Year", value: "year" },
 ];
 
-const tags: TodoTags[] = ["work", "personal", "workout", "today"];
+const tags: TodoTags[] = ["work", "personal", "workout"];
 const tagLabels: Record<TodoTags, string> = {
 	work: "Work",
 	personal: "Personal",
 	workout: "Workout",
-	today: "Today",
 };
 
 function toDateKey(date: Date) {

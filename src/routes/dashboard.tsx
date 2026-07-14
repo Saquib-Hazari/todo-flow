@@ -47,6 +47,49 @@ const TaskAnalytics = lazy(() =>
 	})),
 );
 
+type DashboardView = "todos" | "calendar" | "analytics";
+
+type DashboardSearch = {
+	view?: DashboardView;
+	filter?: TodoFilter;
+	dueDateFilter?: DueDateFilter;
+};
+
+const todoFilterLabels: Record<TodoFilter, string> = {
+	all: "My todos",
+	today: "Today",
+	completed: "Completed",
+	personal: "Personal",
+	work: "Work",
+	workout: "Workout",
+};
+
+function getDashboardView(value: unknown): DashboardView | undefined {
+	return value === "todos" || value === "calendar" || value === "analytics"
+		? value
+		: undefined;
+}
+
+function getTodoFilter(value: unknown): TodoFilter | undefined {
+	return value === "all" ||
+		value === "today" ||
+		value === "completed" ||
+		value === "personal" ||
+		value === "work" ||
+		value === "workout"
+		? value
+		: undefined;
+}
+
+function getDueDateFilter(value: unknown): DueDateFilter | undefined {
+	return value === "all" ||
+		value === "today" ||
+		value === "tomorrow" ||
+		value === "next7Days"
+		? value
+		: undefined;
+}
+
 const requireUser = createServerFn().handler(async () => {
 	const { isAuthenticated, userId } = await auth();
 
@@ -60,6 +103,16 @@ const requireUser = createServerFn().handler(async () => {
 });
 
 export const Route = createFileRoute("/dashboard")({
+	validateSearch: (search: Record<string, unknown>): DashboardSearch => {
+		const view = getDashboardView(search.view);
+		const filter = getTodoFilter(search.filter);
+		const dueDateFilter = getDueDateFilter(search.dueDateFilter);
+		return {
+			...(view ? { view } : {}),
+			...(filter ? { filter } : {}),
+			...(dueDateFilter ? { dueDateFilter } : {}),
+		};
+	},
 	head: () => ({
 		title: "Dashboard — Flow",
 		meta: [{ name: "robots", content: "noindex, nofollow, noarchive" }],
@@ -72,14 +125,19 @@ export const Route = createFileRoute("/dashboard")({
 
 function DashboardPage() {
 	const { user, isLoaded } = useUser();
+	const {
+		view,
+		filter: urlFilter,
+		dueDateFilter: urlDueDateFilter,
+	} = Route.useSearch();
+	const activeView = view ?? "analytics";
+	const navigate = Route.useNavigate();
 
 	const [todos, setTodos] = useState<Todo[]>([]);
-	const [filter, setFilter] = useState<TodoFilter>("all");
-	const [dueDateFilter, setDueDateFilter] = useState<DueDateFilter>("all");
+	const filter = urlFilter ?? "all";
+	const todoPageLabel = todoFilterLabels[filter];
+	const dueDateFilter = urlDueDateFilter ?? "all";
 	const [sidebarOpen, setSidebarOpen] = useState(false);
-	const [activeView, setActiveView] = useState<
-		"todos" | "calendar" | "analytics"
-	>("analytics");
 	const [todoDialogOpen, setTodoDialogOpen] = useState(false);
 	const [selectedDueDate, setSelectedDueDate] = useState(() =>
 		getLocalDateKey(),
@@ -89,6 +147,31 @@ function DashboardPage() {
 	const sensors = useSensors(
 		useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
 	);
+
+	function setActiveView(view: DashboardView) {
+		navigate({
+			search: (previous) => ({ ...previous, view }),
+		});
+	}
+
+	function setTodoFilter(nextFilter: TodoFilter) {
+		navigate({
+			search: (previous) => ({
+				...previous,
+				view: "todos",
+				filter: nextFilter,
+			}),
+		});
+	}
+
+	function setDueDateFilter(nextDueDateFilter: DueDateFilter) {
+		navigate({
+			search: (previous) => ({
+				...previous,
+				dueDateFilter: nextDueDateFilter,
+			}),
+		});
+	}
 
 	useEffect(() => {
 		function handleScroll() {
@@ -117,6 +200,10 @@ function DashboardPage() {
 		todos.length === 0 ? 0 : Math.round((completedTodos / todos.length) * 100);
 
 	const progress = todos.length > 0 ? (completedTodos / todos.length) * 100 : 0;
+	const defaultTodoDueDate =
+		dueDateFilter === "tomorrow" || dueDateFilter === "next7Days"
+			? getLocalDateKey(new Date(Date.now() + 24 * 60 * 60 * 1000))
+			: getLocalDateKey();
 	const visibleTodos = filterTodosByDueDate(
 		filterTodos(todos, filter),
 		dueDateFilter,
@@ -195,10 +282,7 @@ function DashboardPage() {
 		<main className="flex min-h-screen bg-flow-canvas text-flow-text">
 			<Sidebar
 				filter={filter}
-				onFilterChange={(nextFilter) => {
-					setFilter(nextFilter);
-					setActiveView("todos");
-				}}
+				onFilterChange={setTodoFilter}
 				activeView={activeView}
 				onCalendarOpen={() => setActiveView("calendar")}
 				onAnalyticsOpen={() => setActiveView("analytics")}
@@ -273,7 +357,7 @@ function DashboardPage() {
 					) : (
 						<>
 							<p className="inline-flex rounded-full bg-flow-primary-soft px-3 py-1 text-sm font-semibold uppercase tracking-wide text-flow-primary">
-								My todos
+								{todoPageLabel}
 							</p>
 
 							<h1 className="mt-3 text-3xl font-bold tracking-tight">
@@ -346,8 +430,9 @@ function DashboardPage() {
 											filter === "work" ||
 											filter === "workout"
 												? filter
-												: "today"
+												: "work"
 										}
+										defaultDueDate={defaultTodoDueDate}
 										onCreate={handleCreateTodo}
 									/>
 								</div>

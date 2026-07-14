@@ -1,39 +1,98 @@
-import { createServerFn } from "@tanstack/react-start";
+import type { Todo, TodoTags } from "./types.ts";
 
-export const createTodo = createServerFn()
-	.validator(
-		(input: {
-			title: string;
-			description?: string;
-			tag: "work" | "today" | "personal" | "workout";
-			dueDate: string;
-		}) => input,
-	)
-	.handler(async ({ data }) => {
-		const { createTodoRecord } = await import("./todo.server");
-		return createTodoRecord(data);
-	});
+const STORAGE_KEY = "flow-todos";
 
-export const listTodos = createServerFn().handler(async () => {
-	const { listTodoRecords } = await import("./todo.server");
-	return listTodoRecords();
-});
+type TodoInput = Pick<Todo, "title" | "description" | "tag" | "dueDate">;
+type StoredTodo = Omit<Todo, "tag"> & { tag: TodoTags | "today" };
 
-export const deleteTodo = createServerFn()
-	.validator((todoId: string) => todoId)
-	.handler(async ({ data }) => {
-		const { deleteTodoRecord } = await import("./todo.server");
-		return deleteTodoRecord(data);
-	});
+function parseTodo(value: unknown): Todo | null {
+	if (!value || typeof value !== "object") return null;
+	const todo = value as Partial<StoredTodo>;
+	const isValidTodo =
+		typeof todo.id === "string" &&
+		typeof todo.title === "string" &&
+		typeof todo.dueDate === "string" &&
+		typeof todo.completed === "boolean" &&
+		["work", "today", "personal", "workout"].includes(todo.tag as string);
 
-export const updateTodoCompletion = createServerFn()
-	.validator((input: { id: string; completed: boolean }) => input)
-	.handler(async ({ data }) => {
-		const { updateTodoCompletionRecord } = await import("./todo.server");
-		return updateTodoCompletionRecord(data);
-	});
+	if (!isValidTodo) return null;
+	const storedTodo = todo as StoredTodo;
 
-export const clearTodos = createServerFn().handler(async () => {
-	const { clearTodoRecords } = await import("./todo.server");
-	return clearTodoRecords();
-});
+	return {
+		id: storedTodo.id,
+		title: storedTodo.title,
+		description:
+			typeof storedTodo.description === "string"
+				? storedTodo.description
+				: undefined,
+		tag: storedTodo.tag === "today" ? "work" : storedTodo.tag,
+		dueDate: storedTodo.dueDate,
+		completed: storedTodo.completed,
+	};
+}
+
+function readTodos(): Todo[] {
+	if (typeof window === "undefined") return [];
+
+	try {
+		const storedTodos = window.localStorage.getItem(STORAGE_KEY);
+		if (!storedTodos) return [];
+		const parsedTodos: unknown = JSON.parse(storedTodos);
+		return Array.isArray(parsedTodos)
+			? parsedTodos.flatMap((todo) => {
+					const parsedTodo = parseTodo(todo);
+					return parsedTodo ? [parsedTodo] : [];
+				})
+			: [];
+	} catch {
+		return [];
+	}
+}
+
+function writeTodos(todos: Todo[]) {
+	window.localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+}
+
+function createId() {
+	return typeof crypto !== "undefined" && "randomUUID" in crypto
+		? crypto.randomUUID()
+		: `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
+export async function listTodos() {
+	return readTodos();
+}
+
+export async function createTodo({ data }: { data: TodoInput }) {
+	const todo: Todo = {
+		id: createId(),
+		title: data.title.trim(),
+		description: data.description?.trim() || undefined,
+		tag: data.tag,
+		dueDate: data.dueDate,
+		completed: false,
+	};
+
+	writeTodos([...readTodos(), todo]);
+	return todo;
+}
+
+export async function deleteTodo({ data: todoId }: { data: string }) {
+	writeTodos(readTodos().filter((todo) => todo.id !== todoId));
+}
+
+export async function updateTodoCompletion({
+	data,
+}: {
+	data: { id: string; completed: boolean };
+}) {
+	writeTodos(
+		readTodos().map((todo) =>
+			todo.id === data.id ? { ...todo, completed: data.completed } : todo,
+		),
+	);
+}
+
+export async function clearTodos() {
+	writeTodos([]);
+}

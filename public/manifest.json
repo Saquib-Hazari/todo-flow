@@ -1,18 +1,13 @@
 {
   "short_name": "Flow",
   "name": "Flow — A calmer way to get things done",
-  "icons": [
-    {
-      "src": "logo.png",
-      "type": "image/png",
-      "sizes": "30x30"
-    },
-    {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "30x30"
-    }
-  ],
+	"icons": [
+		{
+			"src": "logo.png",
+			"type": "image/png",
+			"sizes": "30x30"
+		}
+	],
   "start_url": "/",
   "display": "standalone",
   "theme_color": "#0da678",

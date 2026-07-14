@@ -1,10 +1,19 @@
 import { Show, SignInButton, SignUpButton } from "@clerk/tanstack-react-start";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import {
+	CalendarDays,
+	ChartNoAxesCombined,
+	ListTodo,
+	Sparkles,
+} from "lucide-react";
+import { type ReactNode, useLayoutEffect, useRef } from "react";
 import { AuthActions } from "../components/AuthAction.tsx";
 import { ThemeMenu } from "../components/ThemeMenu.tsx";
 
 const SITE_URL = (
-	import.meta.env.VITE_APP_URL ?? "https://todo-flows.netlify.app"
+	import.meta.env.VITE_APP_URL ?? "https://todo-flow.vercel.app"
 ).replace(/\/$/, "");
 const SHARE_IMAGE = `${SITE_URL}/homepage.png`;
 
@@ -48,9 +57,69 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
+	const pageRef = useRef<HTMLElement>(null);
+
+	useLayoutEffect(() => {
+		const page = pageRef.current;
+		if (
+			!page ||
+			window.matchMedia("(prefers-reduced-motion: reduce)").matches
+		) {
+			return;
+		}
+
+		gsap.registerPlugin(ScrollTrigger);
+		const context = gsap.context(() => {
+			gsap.from("[data-flow-nav]", {
+				y: -18,
+				opacity: 0,
+				duration: 0.55,
+				ease: "power2.out",
+			});
+			gsap.from("[data-flow-hero-copy] > *", {
+				y: 24,
+				opacity: 0,
+				stagger: 0.1,
+				delay: 0.12,
+				duration: 0.65,
+				ease: "power3.out",
+			});
+			gsap.from("[data-flow-preview]", {
+				x: 34,
+				y: 12,
+				opacity: 0,
+				delay: 0.25,
+				duration: 0.8,
+				ease: "power3.out",
+			});
+			gsap.utils
+				.toArray<HTMLElement>("[data-flow-reveal]")
+				.forEach((element) => {
+					gsap.from(element, {
+						y: 28,
+						opacity: 0,
+						duration: 0.65,
+						ease: "power2.out",
+						scrollTrigger: {
+							trigger: element,
+							start: "top 86%",
+						},
+					});
+				});
+		}, page);
+
+		return () => context.revert();
+	}, []);
+
 	return (
-		<main className="min-h-screen bg-flow-canvas text-flow-text">
-			<nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 lg:px-10">
+		<main
+			ref={pageRef}
+			className="min-h-screen overflow-hidden bg-flow-canvas text-flow-text"
+		>
+			<nav
+				data-flow-nav
+				className="relative z-50 mx-auto flex max-w-7xl items-center justify-between px-6 py-6 lg:px-10"
+			>
 				<Link to="/" className="flex items-center gap-3">
 					<span className="grid size-9 place-items-center rounded-xl bg-flow-primary text-lg font-bold text-white">
 						✓
@@ -75,11 +144,11 @@ function HomePage() {
 				</div>
 			</nav>
 
-			<section className="mx-auto grid max-w-7xl items-center gap-16 px-6 pb-24 pt-20 lg:grid-cols-2 lg:px-10 lg:pt-32">
-				<div>
+			<section className="relative mx-auto grid max-w-7xl items-center gap-16 px-6 pb-24 pt-20 lg:grid-cols-2 lg:px-10 lg:pt-32">
+				<div data-flow-hero-copy>
 					<div className="mb-6 inline-flex items-center gap-2 rounded-full bg-flow-primary-soft px-3 py-2 text-xs font-semibold text-flow-primary-hover">
-						<span className="size-2 rounded-full bg-flow-primary" />A calmer way
-						to get things done
+						<Sparkles size={14} aria-hidden="true" />A calmer way to get things
+						done
 					</div>
 
 					<h1 className="max-w-2xl text-5xl font-bold leading-[1.02] tracking-[-0.045em] sm:text-6xl lg:text-display">
@@ -132,11 +201,14 @@ function HomePage() {
 					</p>
 				</div>
 
-				<TaskPreview />
+				<div data-flow-preview>
+					<TaskPreview />
+				</div>
 			</section>
 
 			<section
 				id="features"
+				data-flow-reveal
 				className="mx-auto grid max-w-7xl gap-4 px-6 pb-24 sm:grid-cols-2 lg:px-10"
 			>
 				<FeatureCard
@@ -148,13 +220,124 @@ function HomePage() {
 					description="Move one step at a time."
 				/>
 			</section>
+
+			<section
+				data-flow-reveal
+				className="mx-auto max-w-7xl px-6 pb-28 pt-4 text-center lg:px-10"
+			>
+				<p className="text-sm font-bold uppercase tracking-[0.2em] text-flow-primary">
+					Built for real life
+				</p>
+				<h2 className="mx-auto mt-5 max-w-4xl text-4xl font-bold leading-tight tracking-[-0.04em] sm:text-5xl lg:text-6xl">
+					Your tasks, calendar, and progress—finally in one clear place.
+				</h2>
+				<p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-flow-text-secondary">
+					Capture the small things before they slip away, plan the week with
+					confidence, and use your dashboard to build a rhythm that lasts.
+				</p>
+				<a
+					href="#how-it-works"
+					className="flow-button-primary flow-focus-ring mt-9 inline-flex rounded-xl px-5 py-3.5 text-sm font-semibold"
+				>
+					See how Flow works →
+				</a>
+			</section>
+
+			<section
+				id="how-it-works"
+				data-flow-reveal
+				className="mx-auto max-w-7xl px-6 pb-24 lg:px-10"
+			>
+				<div className="rounded-3xl border border-flow-border bg-flow-surface-soft p-7 sm:p-10">
+					<p className="text-sm font-bold uppercase tracking-widest text-flow-primary">
+						How Flow works
+					</p>
+					<h2 className="mt-3 max-w-xl text-3xl font-bold tracking-tight sm:text-4xl">
+						A simple system for a calmer day.
+					</h2>
+					<div className="mt-10 grid gap-5 md:grid-cols-3">
+						<Step
+							number="01"
+							icon={<ListTodo size={20} />}
+							title="Capture the task"
+							description="Add what needs doing and give it a meaningful category."
+						/>
+						<Step
+							number="02"
+							icon={<CalendarDays size={20} />}
+							title="Plan your time"
+							description="Schedule it for today, tomorrow, or a date that works for you."
+						/>
+						<Step
+							number="03"
+							icon={<ChartNoAxesCombined size={20} />}
+							title="See your progress"
+							description="Use your dashboard to spot momentum and keep your focus."
+						/>
+					</div>
+				</div>
+			</section>
+
+			<section
+				id="faq"
+				data-flow-reveal
+				className="mx-auto max-w-3xl px-6 pb-24 lg:px-10"
+			>
+				<div className="text-center">
+					<p className="text-sm font-bold uppercase tracking-widest text-flow-primary">
+						FAQ
+					</p>
+					<h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+						A few helpful answers.
+					</h2>
+				</div>
+				<div className="mt-9 space-y-3">
+					<Faq
+						question="Is Flow free to use?"
+						answer="Yes. Flow is free to start and built to keep task planning simple."
+					/>
+					<Faq
+						question="Can I plan tasks for future dates?"
+						answer="Absolutely. Use the calendar or date picker to schedule tasks for tomorrow, next week, or any date you choose."
+					/>
+					<Faq
+						question="Where is my task data stored?"
+						answer="Your tasks are stored safely in your browser's local storage, so Flow stays fast and frontend-only."
+					/>
+				</div>
+			</section>
+
+			<footer className="border-t border-flow-border bg-flow-surface">
+				<div className="mx-auto flex max-w-7xl flex-col gap-5 px-6 py-8 sm:flex-row sm:items-center sm:justify-between lg:px-10">
+					<Link to="/" className="flex items-center gap-2 font-bold">
+						<span className="grid size-7 place-items-center rounded-lg bg-flow-primary text-sm text-white">
+							✓
+						</span>
+						flow
+					</Link>
+					<p className="text-sm text-flow-text-secondary">
+						Plan with clarity. Make room for what matters.
+					</p>
+					<div className="flex gap-4 text-sm font-medium text-flow-text-secondary">
+						<a
+							href="#how-it-works"
+							className="transition hover:text-flow-primary"
+						>
+							How it works
+						</a>
+						<a href="#faq" className="transition hover:text-flow-primary">
+							FAQ
+						</a>
+					</div>
+				</div>
+			</footer>
 		</main>
 	);
 }
 
 function TaskPreview() {
 	return (
-		<div className="flow-card relative overflow-hidden bg-flow-primary-wash p-6">
+		<div className="flow-card relative overflow-hidden bg-flow-primary-wash p-6 transition duration-300 hover:-translate-y-1 hover:shadow-xl">
 			<div className="mb-6 flex items-center justify-between">
 				<div>
 					<p className="text-xs font-bold tracking-widest text-flow-text-muted">
@@ -178,6 +361,55 @@ function TaskPreview() {
 				<Task title="Book dentist appointment" />
 			</div>
 		</div>
+	);
+}
+
+function Step({
+	number,
+	icon,
+	title,
+	description,
+}: {
+	number: string;
+	icon: ReactNode;
+	title: string;
+	description: string;
+}) {
+	return (
+		<article className="rounded-2xl border border-flow-border bg-flow-surface p-5 transition duration-300 hover:-translate-y-1 hover:border-flow-primary">
+			<div className="flex items-center justify-between">
+				<span className="grid size-10 place-items-center rounded-xl bg-flow-primary-soft text-flow-primary">
+					{icon}
+				</span>
+				<span className="text-xs font-bold tracking-widest text-flow-text-muted">
+					{number}
+				</span>
+			</div>
+			<h3 className="mt-6 text-lg font-bold">{title}</h3>
+			<p className="mt-2 text-sm leading-6 text-flow-text-secondary">
+				{description}
+			</p>
+		</article>
+	);
+}
+
+function Faq({ question, answer }: { question: string; answer: string }) {
+	return (
+		<details className="group rounded-2xl border border-flow-border bg-flow-surface px-5 py-4 transition hover:border-flow-border-strong">
+			<summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold">
+				<span>{question}</span>
+				<span className="text-xl text-flow-primary transition-transform duration-300 ease-out group-open:rotate-45">
+					+
+				</span>
+			</summary>
+			<div className="grid grid-rows-[0fr] opacity-0 transition-[grid-template-rows,opacity] duration-300 ease-out group-open:grid-rows-[1fr] group-open:opacity-100">
+				<div className="overflow-hidden">
+					<p className="max-w-2xl pt-3 text-sm leading-6 text-flow-text-secondary">
+						{answer}
+					</p>
+				</div>
+			</div>
+		</details>
 	);
 }
 
